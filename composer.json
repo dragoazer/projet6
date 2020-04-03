@@ -1,0 +1,10 @@
+{
+    "name": "florent/projet6",
+    "description":"blog sur 3 rubriques",
+    "autoload": {
+        "psr-4": {
+        	"Acme\\": "src/"
+    	}
+    },
+    "require": {}
+}
