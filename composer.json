@@ -3,8 +3,11 @@
     "description":"blog sur 3 rubriques",
     "autoload": {
         "psr-4": {
-        	"Acme\\": "src/"
+        	"Acme\\": "src/",
+        	"Projet6\\Controller\\": "./Controller/"
     	}
     },
-    "require": {}
+    "require": {
+        "twig/twig": "^2.0"
+    }
 }

@@ -1,17 +1,23 @@
 <?php
 	session_start();
-	require "../vendor/autoload.php";
+	
+	require_once "../vendor/autoload.php";
 
-	use projet6\Controller\GeneralController;
+	use Projet6\Controller\GeneralController;
 
+	$loader = new \Twig\Loader\FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/projet6/template');
+	$twig = new \Twig\Environment($loader, [
+	]);
 	$generalController = new GeneralController();
 
+	
 	if (isset($_GET["action"])) {
 	 	switch ($_GET["action"]) {
 	 		case 'home':
-        		$generalController->displayHome();
+        		$generalController->displayHome($twig);
         		break;
 	 	}
 	} else {
-    	$generalController->displayHome();
+    	$generalController->displayHome($twig);
     }
+
