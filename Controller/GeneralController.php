@@ -3,13 +3,22 @@
 
 	class GeneralController 
 	{
+		private $twig;
 
-		public function displayHome ($twig) 
+		public function __construct ()
 		{
-			$template = $twig->load('accueil.php');
+			$loader = new \Twig\Loader\FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/projet6/template');
+			$this->twig = new \Twig\Environment($loader);
+		}
+
+		public function displayHome () 
+		{
+
+			$template = $this->twig->load('accueil.html');
 			echo $template->render([
-				'css' =>'public\css\baseCss.css',
-				'title' => 'Bievenue sur l\'accueil.',		
+				'title' => 'Bienvenue sur l\'accueil.',
+				'css' =>'/projet6/public/css/baseCss.css',
+				'js' =>'/projet6/public/js/homeParallax.js'
 			]);
 		}
 	}

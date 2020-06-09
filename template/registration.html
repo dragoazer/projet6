@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block content %}
+	<p>Vous être sur la page d'inscription veuillez remplir le champs ci dessous</p>
+	<form>
+		<label>Nom</label>
+		<input type="text" name="first_name">
+		<label>Prénom</label>
+		<input type="text" name="last_name">
+		<label>Adresse mail</label>
+		<input type="text" name="email">
+		<label>Mot de passe</label>
+		<input type="password" name="pwd">
+		<p id="inscription"></p>
+		<button id=""><a href="/projet6/public/index.php?action=setRegistration">Inscription<a></button>
+	</form>
+	<script src="./js/general.js"></script>
+	<script src="./js/registration.js"></script>
+{% endblock %}

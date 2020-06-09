@@ -3,9 +3,9 @@
     "description":"blog sur 3 rubriques",
     "autoload": {
         "psr-4": {
-        	"Acme\\": "src/",
-        	"Projet6\\Controller\\": "./Controller/"
-    	}
+            "Projet6\\Controller\\": "Controller/",
+            "Projet6\\Model\\": "Model/"
+        }
     },
     "require": {
         "twig/twig": "^2.0"

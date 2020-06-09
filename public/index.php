@@ -4,20 +4,41 @@
 	require_once "../vendor/autoload.php";
 
 	use Projet6\Controller\GeneralController;
+	use Projet6\Controller\AccountController;
+	//use Projet6\Controller\ForumController;
 
-	$loader = new \Twig\Loader\FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/projet6/template');
-	$twig = new \Twig\Environment($loader, [
-	]);
 	$generalController = new GeneralController();
-
+	$accountController = new AccountController();
+	//$forumController = new ForumController();
+	
 	
 	if (isset($_GET["action"])) {
 	 	switch ($_GET["action"]) {
 	 		case 'home':
-        		$generalController->displayHome($twig);
+        		$generalController->displayHome();
+        		break;
+
+        	case 'showForum':
+        		$forumController->displayForum();
+        		break;
+
+        	case 'ShowTopic':
+        		$forumController->displayTopic();
+        		break;
+
+        	case 'portfolio':
+        		$generalController->displayPortfolio();
+        		break;
+
+        	case 'registration':
+        		$accountController->displayRegistration();
+        		break;
+
+        	case 'setRegistration':
+        		$accountController->setRegistration();
         		break;
 	 	}
 	} else {
-    	$generalController->displayHome($twig);
+    	$generalController->displayHome();
     }
 
