@@ -37,6 +37,10 @@
         	case 'setRegistration':
         		$accountController->setRegistration();
         		break;
+
+            case 'displayLogin':
+                $accountController->displayLogin();
+                break;
 	 	}
 	} else {
     	$generalController->displayHome();

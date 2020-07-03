@@ -1,4 +1,4 @@
-class Connection {
+class Registration {
 	constructor () {
 		this.verifInscription();
 		this.general = new General;
@@ -59,7 +59,7 @@ class Connection {
 	ajaxInscription (email,first_name,last_name,pwd)
 	{
 		$.ajax({
-			url: 'index.php?action=registration',
+			url: 'index.php?action=setRegistration',
 			type: 'POST',
 			data: {
 				email: email,

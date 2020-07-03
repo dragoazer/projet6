@@ -27,13 +27,21 @@
 			]);
 		}
 
+		public function displayLogin ()
+		{
+			$template = $this->twig->load('connexion.html');
+			echo $template->render([
+				'title' => 'Connexion.'
+			]);
+		}
+
 		public function setRegistration ()
 		{
 			$data = [
 				"first_name" => $_POST['first_name'],
 				"last_name" => $_POST['last_name'],
 				"email" => $_POST['email'],
-				"pwd" => password_hash($_POST['password'], PASSWORD_DEFAULT),
+				"pwd" => $_POST['pwd']
 			];
 			$account = new Account($data);
 			$connected = $this->accountModel->setRegistration($account);

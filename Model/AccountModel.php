@@ -9,23 +9,29 @@
 	 */
 	class AccountModel extends Manager
 	{
+		private $req;
+
+		public function __construct()
+		{
+			$this->req = $this->dbConnect();
+		}
+
 		public function setRegistration (Account $account)
 		{
-			$req = $this->dbConnect()->prepare("SELECT first_name, last_name, email FROM account WHERE email=?");
-			$req->execute(array(
+			$exec = $this->req->prepare("SELECT first_name, last_name, email FROM account WHERE email=?");
+			$exec->execute(array(
 				$account->email(),
 			));
-			if ($req->fetch()) {
+			if ($exec->fetch()) {
 				return "error";
 			} else {
-				$req = $this->dbConnect()->prepare("INSERT INTO account(first_name, last_name, user_type, profile_picture, email, pwd) VALUES (:first_name, :last_name, :user_type, :profile_picture, :email, :pwd)");
-				$req->execute([
+				$exec = $this->req->prepare("INSERT INTO account(first_name, last_name, user_type, email, pwd) VALUES (:first_name, :last_name, :user_type, :email, :pwd)");
+				$exec->execute([
 		        	"first_name"=> $account->first_name(),
 		        	"last_name"=> $account->last_name(),
 		        	"user_type"=>"member",
-		        	"profile_picture"=>"public/image/basicProfile.png",
 		        	"email"=> $account->email(),
-		        	"pwd"=> $account->pwd(),
+		        	"pwd"=> password_hash($account->pwd(), PASSWORD_DEFAULT),
 		    	]);
 			}
 		}

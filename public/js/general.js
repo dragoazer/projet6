@@ -31,7 +31,7 @@ class General {
 	pwdTest (password)
 	{	
 		if (password != undefined && password != null) {
-			if (password.match(/\d+/g) && password.length >= 8 ) {
+			if (password.match(/\d+/g) && password.length >= 8 && password.match(/[A-Z]+/g) ) {
 				return true;
 			} else {
     			return false;
@@ -44,5 +44,21 @@ class General {
 	convertDate(dateString){
 		let p = dateString.split(/\D/g);
 		return [p[2],p[1],p[0] ].join("/");
+	}
+
+	requireJsFiles ()
+	{
+		console.log("coucou");
+		$(window).on('load', ()=> {
+			let searchUrl = new URLSearchParams(document.location.search.substring(1));
+			let action = searchUrl.get("action");
+			switch (action) {
+
+				case 'registration':
+					$("body").append('<script src="./js/registration.js"></script>');
+					let registration = new Registration();
+				break;
+			}		
+		});
 	}
 } 
