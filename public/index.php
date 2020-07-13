@@ -10,8 +10,7 @@
 	$generalController = new GeneralController();
 	$accountController = new AccountController();
 	//$forumController = new ForumController();
-	
-	
+
 	if (isset($_GET["action"])) {
 	 	switch ($_GET["action"]) {
 	 		case 'home':
@@ -40,6 +39,10 @@
 
             case 'displayLogin':
                 $accountController->displayLogin();
+                break;
+
+            case 'setLogin':
+                $accountController->setLogin();
                 break;
 	 	}
 	} else {

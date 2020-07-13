@@ -1,11 +1,11 @@
 {% extends "template.html" %}
 {% block content %}
 	<p>Vous être sur la page de connexion veuillez remplir le champs ci dessous</p>
-	<form>
+	<form id="connexion">
 		<label>Mail</label>
-		<input type="text" name="first_name">
+		<input type="text" name="emailConect" >
 		<label>Mot de passe</label>
-		<input type="password" name="last_name">
-		<button id="submitLogin"> Inscription </button>
+		<input type="password" name="pwdConect">
+		<button id="submitConect"> Inscription </button>
 	</form>
 {% endblock %}

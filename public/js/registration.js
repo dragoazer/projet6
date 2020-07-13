@@ -67,11 +67,18 @@ class Registration {
 				last_name: last_name,
 				pwd: pwd,
 			},
-			succes : function() 
-			{
-				$("#inscription").append("<p class='valid'>Votre inscription à été pris compte veuillez vous connecter.</p>");
+
+			complete: function(response) 
+			{		
+				var text = response.responseText;
+				$("#inscription").empty();
+				if (text === "error") {
+					$("#inscription").append("<p class='error'>Ce compte existe déjà, veuillez vous connecter.</p>");
+				} else {
+					$("#inscription").append("<p class='valid'>Votre inscription a été pris compte, veuillez vous connecter.</p>");
+				}
 			},
-			error : function ()
+			error: function ()
 			{
 				$("#inscription").append("<p class='error'>Erreur interne, veullez réessayer votre inscription.</p>");
 			}

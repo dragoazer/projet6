@@ -46,4 +46,22 @@
 			$account = new Account($data);
 			$connected = $this->accountModel->setRegistration($account);
 		}
+
+		public function setLogin ()
+		{
+			$data = [
+				"email" => $_POST['email'],
+				"pwd" => $_POST['pwd']
+			];
+			$account = new Account($data);
+			$connected = $this->accountModel->setLogin($account);
+			if ($connected != "error") {
+				$_SESSION["connected"] = $connected->email();
+				$_SESSION["last_name"] = $connected->last_name();
+				$_SESSION["first_name"] = $connected->first_name();
+				$_SESSION["user_type"] = $connected->user_type();
+			} else {
+				echo "error";
+			}
+		}
 	}

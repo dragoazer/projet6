@@ -21,7 +21,7 @@ class General {
 
 	emptyTest (variable) 
 	{
-		if (variable === NaN || variable === undefined || variable == null || variable.length <= 0 || /^\s*$/.test(variable)) {
+		if (variable === undefined || variable === NaN || variable == null || variable.length <= 0 || /^\s*$/.test(variable)) {
     		return true;
     	} else {
     		return false;
@@ -48,15 +48,20 @@ class General {
 
 	requireJsFiles ()
 	{
-		console.log("coucou");
 		$(window).on('load', ()=> {
+			let version = Date.now();
 			let searchUrl = new URLSearchParams(document.location.search.substring(1));
 			let action = searchUrl.get("action");
 			switch (action) {
 
 				case 'registration':
-					$("body").append('<script src="./js/registration.js"></script>');
+					$("body").append('<script src="./js/registration.js?'+version+'"></script>');
 					let registration = new Registration();
+				break;
+
+				case 'displayLogin':
+					$("body").append('<script src="./js/connexion.js?'+version+'"></script>');
+					let connexion = new Connexion();
 				break;
 			}		
 		});
