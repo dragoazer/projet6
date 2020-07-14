@@ -56,12 +56,20 @@
 			$account = new Account($data);
 			$connected = $this->accountModel->setLogin($account);
 			if ($connected != "error") {
-				$_SESSION["connected"] = $connected->email();
-				$_SESSION["last_name"] = $connected->last_name();
-				$_SESSION["first_name"] = $connected->first_name();
-				$_SESSION["user_type"] = $connected->user_type();
+				$this->twig->addGlobal('connected', array(
+    				$email = $connected->email(),
+					$last_name = $connected->last_name(),
+					$first_name = $connected->first_name(),
+					$user_type = $connected->user_type()
+				));
 			} else {
 				echo "error";
 			}
+		}
+
+		public function signOut ()
+		{
+			$this->twig->addGlobal('connected', "");
+			header('Location: ../public/index.php?action=home');
 		}
 	}

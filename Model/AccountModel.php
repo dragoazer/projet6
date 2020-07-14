@@ -30,7 +30,7 @@
 		        	"first_name"=> $account->first_name(),
 		        	"last_name"=> $account->last_name(),
 		        	"user_type"=>"member",
-		        	"profile_picture" => ".\public\imgprofile_picture.jpg",
+		        	"profile_picture" => ".\projet6\public\imgprofile_picture.jpg",
 		        	"email"=> $account->email(),
 		        	"pwd"=> password_hash($account->pwd(), PASSWORD_DEFAULT),
 		    	]);
@@ -45,7 +45,7 @@
 				$account->email(),
 			));
 
-			if ($req->rowCount() > 0) {
+			if ($exec->rowCount() > 0) {
 				$data = new Account($req->fetch());
 				return $data;
 			} else {

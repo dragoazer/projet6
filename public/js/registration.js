@@ -75,7 +75,7 @@ class Registration {
 				if (text === "error") {
 					$("#inscription").append("<p class='error'>Ce compte existe déjà, veuillez vous connecter.</p>");
 				} else {
-					$("#inscription").append("<p class='valid'>Votre inscription a été pris compte, veuillez vous connecter.</p>");
+					$("#inscription").append("<p class='valid'>Votre inscription a été pris compte, veuillez vous <a href='../projet6/public/index.php?action=displayLogin'>connecter.</a></p>");
 				}
 			},
 			error: function ()

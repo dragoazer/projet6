@@ -44,6 +44,10 @@
             case 'setLogin':
                 $accountController->setLogin();
                 break;
+                
+            case 'signOut':
+                $accountController->signOut();
+                break;
 	 	}
 	} else {
     	$generalController->displayHome();

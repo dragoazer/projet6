@@ -39,16 +39,16 @@ class Connexion {
 		});
 	}
 
-	ajaxConnexion (email,password)
+	ajaxConnexion (email,pwd)
 	{
 		$.ajax({
-			url: 'index.php?action=registration',
+			url: 'index.php?action=setLogin',
 			type: 'POST',
 			data: {
 				email: email,
-				password: password,
+				pwd: pwd,
 			},
-			succes : function(response) 
+			complete : function(response) 
 			{
 				let text = response.responseText;
 				if (text === 'error') {
@@ -60,17 +60,17 @@ class Connexion {
 						if (time > 0) {
 							$("body").empty();
 							$("body").append("<p class='valid'>Connexion réussi retour à la page d'accueil dans "+time+".</p>"+
-							"<p> Ou cliqué ici pour retourner directement à la <a href=''>page d'accueil</a>.</p>");
+							"<p> Ou cliqué ici pour retourner directement à la <a href='../projet6/public/index.php?action=home'>page d'accueil</a>.</p>");
 							time -= 1;
 						} else {
-							window.location.replace("http://www.w3schools.com");
+							window.location.replace("../projet6/public/index.php?action=home");
 						}
 					}, 1000);
 				}
 			},
 			error : function ()
 			{
-				$("#connexion").append("<p class='error'>Erreur interne, veullez réessayer votre inscription.</p>");
+				$("#connexion").append("<p class='error'>Erreur interne, veullez réessayer votre connexion.</p>");
 			}
 		});
 	}
