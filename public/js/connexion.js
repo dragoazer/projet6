@@ -60,10 +60,10 @@ class Connexion {
 						if (time > 0) {
 							$("body").empty();
 							$("body").append("<p class='valid'>Connexion réussi retour à la page d'accueil dans "+time+".</p>"+
-							"<p> Ou cliqué ici pour retourner directement à la <a href='../projet6/public/index.php?action=home'>page d'accueil</a>.</p>");
+							"<p> Ou cliqué ici pour retourner directement à la <a href='index.php?action=home'>page d'accueil</a>.</p>");
 							time -= 1;
 						} else {
-							window.location.replace("../projet6/public/index.php?action=home");
+							window.location.replace("index.php?action=home");
 						}
 					}, 1000);
 				}

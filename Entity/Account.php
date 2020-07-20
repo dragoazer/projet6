@@ -8,8 +8,7 @@
 	{
 
 		private  $id;
-		private  $first_name;
-		private  $last_name;
+		private  $pseudo;
 		private  $user_type;
 		private  $profile_picture;
 		private  $email;
@@ -21,8 +20,7 @@
     }
 
 		public function id() { return $this->id;}
-		public function first_name() { return $this->first_name;}
-		public function last_name() { return $this->last_name;}
+		public function pseudo() { return $this->pseudo;}
 		public function user_type() { return $this->user_type;}
 		public function profile_picture() { return $this->profile_picture;}
 		public function email() { return $this->email;}
@@ -48,19 +46,12 @@
       			$this->id = $id;
     		}  
     	}
-
-    	public function setFirst_name($first_name)
+ 
+    	public function setpseudo($pseudo)
   		{
-    		if (is_string($first_name))
+    		if (is_string($pseudo))
     		{
-      			$this->first_name = $first_name;
-    		}
-  		}  
-    	public function setLast_name($last_name)
-  		{
-    		if (is_string($last_name))
-    		{
-      			$this->last_name = $last_name;
+      			$this->pseudo = $pseudo;
     		}
   		} 
     	public function setUser_type($user_type)

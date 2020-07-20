@@ -18,7 +18,8 @@
 			echo $template->render([
 				'title' => 'Bienvenue sur l\'accueil.',
 				'css' =>'/projet6/public/css/baseCss.css',
-				'js' =>'/projet6/public/js/homeParallax.js'
+				'js' =>'/projet6/public/js/homeParallax.js',
+				'session' => $_SESSION['connected'] ?? ""
 			]);
 		}
 	}

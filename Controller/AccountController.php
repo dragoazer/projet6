@@ -38,8 +38,7 @@
 		public function setRegistration ()
 		{
 			$data = [
-				"first_name" => $_POST['first_name'],
-				"last_name" => $_POST['last_name'],
+				"pseudo" => $_POST['pseudo'],
 				"email" => $_POST['email'],
 				"pwd" => $_POST['pwd']
 			];
@@ -56,12 +55,11 @@
 			$account = new Account($data);
 			$connected = $this->accountModel->setLogin($account);
 			if ($connected != "error") {
-				$this->twig->addGlobal('connected', array(
-    				$email = $connected->email(),
-					$last_name = $connected->last_name(),
-					$first_name = $connected->first_name(),
-					$user_type = $connected->user_type()
-				));
+				$_SESSION['connected'] = array(
+    				'email' => $connected->email(),
+					'pseudo' => $connected->pseudo(),
+					'user_type' => $connected->user_type()
+				);
 			} else {
 				echo "error";
 			}
@@ -69,7 +67,7 @@
 
 		public function signOut ()
 		{
-			$this->twig->addGlobal('connected', "");
-			header('Location: ../public/index.php?action=home');
+			session_destroy();
+			header('Location: index.php?action=home');
 		}
 	}

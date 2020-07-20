@@ -1,0 +1,16 @@
+{% extends "template.html" %}
+{% block content %}
+<form id="newTopic">
+	<label>Titre du topic</label>
+	<input type="text" name="title">
+	<label>Nom du jeu</label>
+	<input type="text" name="name">
+	<label>Date de sortie</label>
+	<input type="name" name="date">
+	<label>Entreprise créatrice</label>
+	<input type="text" name="creator">
+	<label>Contenue du topic</label>
+	<input type="text" name="content">
+	<button id="sendForm">Crée le nouveau topic</button>
+</form>
+{% endblock %}

@@ -5,30 +5,41 @@
 
 	use Projet6\Controller\GeneralController;
 	use Projet6\Controller\AccountController;
-	//use Projet6\Controller\ForumController;
+	use Projet6\Controller\gameForController;
 
 	$generalController = new GeneralController();
 	$accountController = new AccountController();
-	//$forumController = new ForumController();
+	$gameForController = new gameForController();
 
 	if (isset($_GET["action"])) {
 	 	switch ($_GET["action"]) {
 	 		case 'home':
         		$generalController->displayHome();
         		break;
-
-        	case 'showForum':
-        		$forumController->displayForum();
+////////////// FORUM
+////////////// GAME
+        	case 'displayGameForum':
+        		$gameForController->displayGameForum();
         		break;
 
-        	case 'ShowTopic':
+            case 'newTopicGame':
+                $gameForController->newTopic();
+                break;
+
+            case 'displayNewTopicGame':
+                $gameForController->displayNewTopic();
+                break;
+
+        	/*case 'ShowTopic':
         		$forumController->displayTopic();
         		break;
 
         	case 'portfolio':
         		$generalController->displayPortfolio();
         		break;
+            */
 
+/////////// ACCOUNT GESTURE
         	case 'registration':
         		$accountController->displayRegistration();
         		break;

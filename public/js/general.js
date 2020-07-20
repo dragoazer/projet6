@@ -63,6 +63,11 @@ class General {
 					$("body").append('<script src="./js/connexion.js?'+version+'"></script>');
 					let connexion = new Connexion();
 				break;
+
+				case 'newTopicGame':
+					$("body").append('<script src="./js/gameForum.js?'+version+'"></script>');
+					let gameForum = new GameForum();
+				break;
 			}		
 		});
 	}
