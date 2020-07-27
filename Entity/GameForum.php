@@ -9,9 +9,12 @@
 
 		private  $id;
 		private  $dev;
-		private  $date;
+		private  $creation_date;
 		private  $name;
 		private  $content;
+    private  $editor;
+    private  $creation_topic;
+    private  $modified;
 
     public function __construct (array $data)
     {
@@ -20,10 +23,13 @@
 
 		public function id() { return $this->id;}
 		public function dev() { return $this->dev;}
-		public function date() { return $this->date;}
+		public function creation_date() { return $this->creation_date;}
 		public function name() { return $this->name;}
 		public function content() { return $this->content;}
     public function title() { return $this->title;}
+    public function editor() { return $this->editor;}
+    public function creation_topic() { return $this->creation_topic;}
+    public function modified() { return $this->modified;}
 
     public function hydrate(array $data)
     {
@@ -36,39 +42,39 @@
         }
       }
     }
-    	public function id($id)
+    	public function setId($id)
   		{
-    		if (is_string($id))
+    		if (is_int($id))
     		{
       			$this->id =  $id;
     		}
   		}
 
-      public function dev($dev)
+      public function setDev($dev)
       {
-        if (is_string($dev))
+        if (is_string($dev) AND strlen($dev) < 50)
         {
             $this->dev =  $dev;
         }
       }
 
-      public function date($date)
+      public function setCreation_date($creation_date)
       {
-        if (is_string($date))
+        if (is_string($creation_date))
         {
-            $this->date =  $date;
+            $this->creation_date =  $creation_date;
         }
       }
 
-      public function name($name)
+      public function setName($name)
       {
-        if (is_string($name))
+        if (is_string($name) AND strlen($name) < 50)
         {
             $this->name =  $name;
         }
       }
 
-      public function content($content)
+      public function setContent($content)
       {
         if (is_string($content))
         {
@@ -76,11 +82,35 @@
         }
       }
 
-      public function title($title)
+      public function setTitle($title)
       {
-        if (is_string($title))
+        if (is_string($title) AND strlen($title) < 50)
         {
             $this->title =  $title;
         }
-      }   		    		  				  		  		
+      }
+
+      public function setEditor($editor)
+      {
+        if (is_string($editor) AND strlen($editor) < 50)
+        {
+            $this->editor =  $editor;
+        }
+      }
+
+      public function setCreation_topic($creation_topic)
+      {
+        if (is_string($creation_topic))
+        {
+            $this->creation_topic =  $creation_topic;
+        }
+      } 
+
+      public function setModified($modified)
+      {
+        if (is_int($modified))
+        {
+            $this->modified =  $modified;
+        }
+      }    		  				  		  		
 	}

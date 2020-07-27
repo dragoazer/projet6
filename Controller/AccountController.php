@@ -55,11 +55,14 @@
 			$account = new Account($data);
 			$connected = $this->accountModel->setLogin($account);
 			if ($connected != "error") {
+				$loader = new \Twig\Loader\FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/projet6/template');
+				$twig = new \Twig\Environment($loader);
 				$_SESSION['connected'] = array(
     				'email' => $connected->email(),
 					'pseudo' => $connected->pseudo(),
 					'user_type' => $connected->user_type()
 				);
+				$twig->addGlobal('connected', $_SESSION['connected']);
 			} else {
 				echo "error";
 			}

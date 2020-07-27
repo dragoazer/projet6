@@ -30,14 +30,13 @@
                 $gameForController->displayNewTopic();
                 break;
 
-        	/*case 'ShowTopic':
-        		$forumController->displayTopic();
+        	case 'ShowTopicGame':
+        		$gameForController->displayTopic();
         		break;
 
-        	case 'portfolio':
-        		$generalController->displayPortfolio();
-        		break;
-            */
+            case 'modifyTopicGame':
+                $gameForController->modifyTopic();
+                break;
 
 /////////// ACCOUNT GESTURE
         	case 'registration':

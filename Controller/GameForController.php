@@ -21,9 +21,12 @@
 
 		public function displayGameForum ()
 		{
+			$displayAllTopic = $this->gameForModel->displayAllTopic(1,5);
 			$template = $this->twig->load('game.html');
 				echo $template->render([
 				'title' => 'Forum jeux vidéo.',
+				'listTopic' => $displayAllTopic,
+				'session' => $_SESSION["connected"] ?? ""
 			]);
 		}
 
@@ -31,10 +34,11 @@
 		{
 			$data = [
 				"dev" => $_POST['creator'],
-				"date" => $_POST['date'],
+				"creation_date" => $_POST['creation_date'],
 				"name" => $_POST['name'],
 				"content" => $_POST['content'],
-				"title" =>  $_POST['title']
+				"title" =>  $_POST['title'],
+				"editor" => $_SESSION['connected']["pseudo"]
 			];
 			$newTopic = new GameForum($data);
 			$newTopicCreated = $this->gameForModel->newTopic($newTopic);
@@ -46,5 +50,28 @@
 				echo $template->render([
 				'title' => `Création d'un nouveau topic.`,
 			]);
+		}
+
+		public function displayTopic ()
+		{
+			$data = [
+				"id" => $_GET['id']
+			];
+			$topic = new GameForum($data);
+			$modelTopic = $this->gameForModel->displayTopic($newTopic);
+			$template = $this->twig->load('gameTopic.html');
+				echo $template->render([
+				'title' => `Sujet: `.$modelTopic->title().`.`,
+			]);
+		}
+
+		public function modifyTopic ()
+		{
+			$data = [
+				"id" => $_POST['id'],
+				"content" => $_POST['content'],
+			];
+			$topic = new GameForum($data);
+			$modelTopic = $this->gameForModel->newTopic($newTopic);
 		}
 	}

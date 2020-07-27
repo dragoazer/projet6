@@ -64,9 +64,11 @@ class General {
 					let connexion = new Connexion();
 				break;
 
-				case 'newTopicGame':
+				case 'displayNewTopicGame':
 					$("body").append('<script src="./js/gameForum.js?'+version+'"></script>');
-					let gameForum = new GameForum();
+					$( document ).ready((e)=> {
+						let gameForum = new GameForum();
+					});			
 				break;
 			}		
 		});

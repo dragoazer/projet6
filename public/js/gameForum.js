@@ -1,19 +1,21 @@
 class GameForum {
 	
-	constructor {
+	constructor ()
+	{
 		this.verifForm();
+		this.general = new General;
 	}
 
 	verifForm ()
 	{
-		$("#sendForm").on("click", function{
+		$("#sendForm").on("click", (e)=>{
 			e.preventDefault();
 
 			let error = false;
 			let errorMsg = '';
 
 			$("input[name='name']").css("border","");
-			$("input[name='date']").css("border","");
+			$("input[name='creation_date']").css("border","");
 			$("input[name='creator']").css("border","");
 			$("input[name='content']").css("border","");
 			$("input[name='title']").css("border","");
@@ -21,33 +23,29 @@ class GameForum {
 			$(".error").remove();
 			$(".valid").remove();
 
-			let name= $("input[name='name']").val();
-			let date = $("input[name='date']").val();
+			let title = $("input[name='title']").val();
+			let name = $("input[name='name']").val();
+			let creation_date = $("input[name='creation_date']").val();
 			let creator = $("input[name='creator']").val();
 			let content = $("input[name='content']").val();
-			let title = $("input[name='title']").val();
-
-			if (this.general.emptyTest(title) || title.length > 50) {
-				error = true;
-				errorMsg = "Le titre n'est pas renseigné";
-				$("input[name='name']").css("border","solid 3px red");
-			}
+			
+			console.log(creation_date);
 
 			if (this.general.emptyTest(name) || name.length > 50) {
 				error = true;
-				errorMsg = "Le nom du jeu n'est pas renseigné";
+				errorMsg = "Le nom du jeu n'est pas renseigné ou trop long";
 				$("input[name='name']").css("border","solid 3px red");
 			}
 
-			if (this.general.emptyTest(date) || date.length > 50) {
+			if (this.general.emptyTest(creation_date) || creation_date.length > 50) {
 				error = true;
-				errorMsg = "La date de parution du jeu n'est pas renseigné.";
-				$("input[name='date']").css("border","solid 3px red");
+				errorMsg = "La date de parition du jeu n'est pas renseigné ou trop longue.";
+				$("input[name='creation_date']").css("border","solid 3px red");
 			}
 
 			if (this.general.emptyTest(creator) || creator.length > 50) {
 				error = true;
-				errorMsg = "Le nom de l'entreprise n'est pas renseigné.";
+				errorMsg = "Le nom de l'entreprise n'est pas renseigné ou trop long.";
 				$("input[name='creator']").css("border","solid 3px red");
 			}
 
@@ -57,23 +55,28 @@ class GameForum {
 				$("input[name='content']").css("border","solid 3px red");
 			}
 
+			if (this.general.emptyTest(title) || title.length > 50) {
+				error = true;
+				errorMsg = "Le titre n'est pas renseigné ou trop long";
+				$("input[name='title']").css("border","solid 3px red");
+			}
+
 			if (!error) {
-				this.ajaxNewTopic(name,date,creator,content,title);
-				$("#newTopic").append("<p class='valid'>Le topic à bien été crée;</p>");
+				this.ajaxNewTopic(name,creation_date,creator,content,title);
 			} else {
 				$("#newTopic").append("<p class='error'>"+errorMsg+"</p>");
 			}
 		});
 	}
 
-	ajaxNewTopic(name,date,creator,content)
+	ajaxNewTopic(name,creation_date,creator,content,title)
 	{
 		$.ajax({
-			url: 'index.php?action=setRegistration',
+			url: 'index.php?action=newTopicGame',
 			type: 'POST',
 			data: {
 				name: name,
-				date: date,
+				creation_date: creation_date,
 				creator: creator,
 				content: content,
 				title: title
@@ -84,9 +87,20 @@ class GameForum {
 				var text = response.responseText;
 				$("#inscription").empty();
 				if (text === "error") {
-					$("#newTopic").append("<p class='error'>Le titre est déjà utilisé.</a>.</p>");
+					$("#newTopic").append("<p class='error'>Le titre est déjà utilisé.</a></p>");
 				} else {
-					$("#newTopic").append("<p class='valid'>Le topic à bien été crée, vous allez être renvoyé dessue.</p>");
+					let interval = null;
+					let time = 5;
+					interval = setInterval( ()=>{
+						if (time > 0) {
+							$("body").empty();
+							$("body").append("<p class='valid'>Le topic à bien été crée, vous allez être renvoyé dessue dans "+time+".</p>"+
+							"<p> Ou cliqué ici pour retourner directement au <a href='index.php?action=home'>Topic</a>.</p>");
+							time -= 1;
+						} else {
+							window.location.replace("index.php?action=home");
+						}
+					}, 1000);
 				}
 			},
 			error: function ()
