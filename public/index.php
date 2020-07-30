@@ -38,6 +38,10 @@
                 $gameForController->modifyTopic();
                 break;
 
+            case 'searchGameForum':
+                $gameForController->searchGameForum();
+                break;
+
 /////////// ACCOUNT GESTURE
         	case 'registration':
         		$accountController->displayRegistration();

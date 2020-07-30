@@ -13,7 +13,10 @@
 		public function __construct ()
 		{
 			$loader = new \Twig\Loader\FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/projet6/template');
-			$this->twig = new \Twig\Environment($loader);
+			$this->twig = new \Twig\Environment($loader, [
+    			'debug' => true,
+			]);
+			$this->twig->addExtension(new \Twig\Extension\DebugExtension());
 			$this->gameForModel = new GameForModel();
 
 		}
@@ -21,13 +24,23 @@
 
 		public function displayGameForum ()
 		{
-			$displayAllTopic = $this->gameForModel->displayAllTopic(1,5);
 			$template = $this->twig->load('game.html');
-				echo $template->render([
+			echo $template->render([
 				'title' => 'Forum jeux vidéo.',
-				'listTopic' => $displayAllTopic,
 				'session' => $_SESSION["connected"] ?? ""
 			]);
+		}
+
+		public function searchGameForum ()
+		{
+			/*$page = $_POST["page"] ?? 1;
+			$maxPerPage = $_POST["maxPerPage"] ?? 10;
+			$min = $page * $maxPerPage - $maxPerPage;
+			$max = $page * $maxPerPage;*/
+			$displayAllTopic = $this->gameForModel->displayAllTopic($_POST["min"],$_POST["max"]);
+			var_dump($displayAllTopic);
+			$datas = json_encode($displayAllTopic);
+			echo $datas;
 		}
 
 		public function newTopic ()

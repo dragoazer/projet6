@@ -6,7 +6,21 @@
 		<p><a href="index.php?action=setLogin">Connectez vous</a> pour pouvoir créer un nouveau sujet</p>
 	{% endif %}
 	<h1>Liste des topic sur les jeux</h1>
-	 {% for topic in listTopic %}
-	        <li>{{ topic }}</li>
-	{% endfor %}
+	<form>
+		<label>Recherche</label>
+		<input type="text" name="search">
+		<label>Nombre de sujet affiché par page :</label>
+		<select name="maxPerPage">
+		    <option value="10">10</option>
+		    <option value="25">25</option>
+		    <option value="50">50</option>
+		    <option value="75">75</option>
+		</select>
+	</form>
+	<p>page<span class="page"></span></p>
+	 <div id="displayTopic">
+	 	
+	 </div>
+	<p>page<span class="page"></span></p>
+
 {% endblock %}

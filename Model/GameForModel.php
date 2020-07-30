@@ -40,13 +40,19 @@
 
 		public function displayAllTopic (int $begin , int $end)
 		{
-			$exec = $this->req->prepare("SELECT * FROM game_forum WHERE id BETWEEN :begining AND :finish");
-			$exec->execute(array(
-				"begining" => $begin,
-				"finish" => $end
-			));
-			$data = $exec->fetch(\PDO::FETCH_ASSOC);
-			return $data;
+			$exec = $this->req->prepare("SELECT * FROM game_forum ORDER BY creation_date DESC LIMIT :begining, :finish ");
+			$exec->bindValue(':finish', $end, \PDO::PARAM_INT);
+			$exec->bindValue(':begining', $begin, \PDO::PARAM_INT);
+			$exec->execute();
+			if ($exec->rowCount() > 0) {
+				while ($data = $exec->fetch(\PDO::FETCH_ASSOC))
+	    		{
+	      			$datas[] = new GameForum($data);
+	      		}
+				return $datas ?? "error";
+			} else {
+				return 'error';
+			}
 		}
 
 		public function displayTopic (GameForum $gameForum)

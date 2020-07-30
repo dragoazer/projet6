@@ -4,7 +4,7 @@
 	/**
 	 * 
 	 */
-	class GameForum 
+	class GameForum implements \JsonSerializable
 	{
 
 		private  $id;
@@ -15,10 +15,16 @@
     private  $editor;
     private  $creation_topic;
     private  $modified;
+    private  $title;
 
     public function __construct (array $data)
     {
       $this->hydrate($data);
+    }
+
+    public function jsonSerialize ()
+    {
+      return get_object_vars($this);
     }
 
 		public function id() { return $this->id;}

@@ -70,6 +70,11 @@ class General {
 						let gameForum = new GameForum();
 					});			
 				break;
+
+				case 'displayGameForum':
+					$("body").append('<script src="./js/displayGameForum.js?'+version+'"></script>');
+					let displayGameForum = new DisplayGameForum();
+				break;
 			}		
 		});
 	}
