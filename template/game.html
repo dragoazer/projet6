@@ -8,9 +8,9 @@
 	<h1>Liste des topic sur les jeux</h1>
 	<form>
 		<label>Recherche</label>
-		<input type="text" name="search">
+		<input type="search" name="search">
 		<label>Nombre de sujet affiché par page :</label>
-		<select name="maxPerPage">
+		<select id ="maxPerPage" name="maxPerPage">
 		    <option value="10">10</option>
 		    <option value="25">25</option>
 		    <option value="50">50</option>
@@ -18,9 +18,9 @@
 		</select>
 	</form>
 	<p>page<span class="page"></span></p>
-	 <div id="displayTopic">
+	 <ol id="displayTopic">
 	 	
-	 </div>
+	 </ol>
 	<p>page<span class="page"></span></p>
 
 {% endblock %}

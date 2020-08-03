@@ -12,10 +12,11 @@
 		private  $creation_date;
 		private  $name;
 		private  $content;
+    private  $title;
     private  $editor;
     private  $creation_topic;
     private  $modified;
-    private  $title;
+    
 
     public function __construct (array $data)
     {
@@ -50,7 +51,7 @@
     }
     	public function setId($id)
   		{
-    		if (is_int($id))
+    		if (is_int($id) OR is_string($id))
     		{
       			$this->id =  $id;
     		}

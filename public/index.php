@@ -42,6 +42,14 @@
                 $gameForController->searchGameForum();
                 break;
 
+            case 'maxPageGame':
+                $gameForController->maxPageGame();
+                break;
+
+            case 'addGameComment':
+                $gameForController->addGameComment();
+                break;
+
 /////////// ACCOUNT GESTURE
         	case 'registration':
         		$accountController->displayRegistration();

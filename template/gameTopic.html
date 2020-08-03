@@ -1,0 +1,42 @@
+    {% extends "template.html" %}
+    {% block content %}
+    	{% if session != "" and session.user_type == "admin" %}
+            <button id="supprTopic">Suprimer le sujet</button>
+            <div id="verifSuppr">
+                <form>
+                    <label>Êtes vous sur de vouloir supprimer ce sujet ?</label>>
+                    <button class="sppr" value="yes">Oui</button>
+                    <button class="sppr" value="no">Non</button>
+                </form>
+            </div>
+
+    		<button id="modifTopic">Modifier le contenue</button>
+    		<div id="displayModifTopic">
+    			<form>
+    				<label>nouveau contenue</label>
+    				<input type="text" name="newContent">
+    				<button id="sendNewContent"> Envoyer</button>
+    			</form>
+    		</div>
+    	{% endif %}
+
+    	<p>Titre: {{ data.title }}</p>
+    	<p>Contenue {{ data.content }}</p>
+
+    	{% if data.modified == 1 %}
+    		<p id="modified">modifié</p>
+    	{% endif %}
+
+    	{% if session != "" %}
+    	<hr>
+    	<button id="comment">Commenter</button>
+    	<hr>
+    	<div id='displayNewComment'>
+    		<form>
+    			<label>Entrer votre commentaire</label>
+    			<input type="text" name="comment">
+    			<button id="sendNewComment">Envoyer</button>
+    		</form>
+    	</div>
+    	{% endif %}
+    {% endblock %}

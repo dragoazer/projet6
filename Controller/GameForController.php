@@ -2,7 +2,9 @@
 	namespace Projet6\Controller;
 
 	use Projet6\Entity\GameForum;
+	use Projet6\Entity\GameComment;
 	use Projet6\Model\GameForModel;
+	use Projet6\Model\GameCommentModel;
 	/**
 	 * 
 	 */
@@ -18,7 +20,7 @@
 			]);
 			$this->twig->addExtension(new \Twig\Extension\DebugExtension());
 			$this->gameForModel = new GameForModel();
-
+			$this->gameCommentModel = new GameCommentModel();
 		}
 
 
@@ -33,12 +35,7 @@
 
 		public function searchGameForum ()
 		{
-			/*$page = $_POST["page"] ?? 1;
-			$maxPerPage = $_POST["maxPerPage"] ?? 10;
-			$min = $page * $maxPerPage - $maxPerPage;
-			$max = $page * $maxPerPage;*/
 			$displayAllTopic = $this->gameForModel->displayAllTopic($_POST["min"],$_POST["max"]);
-			var_dump($displayAllTopic);
 			$datas = json_encode($displayAllTopic);
 			echo $datas;
 		}
@@ -47,7 +44,6 @@
 		{
 			$data = [
 				"dev" => $_POST['creator'],
-				"creation_date" => $_POST['creation_date'],
 				"name" => $_POST['name'],
 				"content" => $_POST['content'],
 				"title" =>  $_POST['title'],
@@ -71,10 +67,14 @@
 				"id" => $_GET['id']
 			];
 			$topic = new GameForum($data);
-			$modelTopic = $this->gameForModel->displayTopic($newTopic);
+			$modelTopic = $this->gameForModel->displayTopic($topic);
+
 			$template = $this->twig->load('gameTopic.html');
 				echo $template->render([
+				'data' => $modelTopic,
+				'css' => '/projet6/public/css/displayTopic.css?'.time(),
 				'title' => `Sujet: `.$modelTopic->title().`.`,
+				'session' => $_SESSION["connected"] ?? "",
 			]);
 		}
 
@@ -85,6 +85,17 @@
 				"content" => $_POST['content'],
 			];
 			$topic = new GameForum($data);
-			$modelTopic = $this->gameForModel->newTopic($newTopic);
+			$modelTopic = $this->gameForModel->newTopic($topic);
+		}
+
+		public function  maxPageGame ()
+		{
+			$modelTopic = $this->gameForModel->maxPageGame();
+			echo $modelTopic;
+		}
+
+		public function addGameComment ()
+		{
+
 		}
 	}

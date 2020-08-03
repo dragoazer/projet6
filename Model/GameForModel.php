@@ -28,7 +28,7 @@
 				$exec = $this->req->prepare("INSERT INTO game_forum(dev, creation_date, name, content, title, editor, modified) VALUES (:dev, :creation_date, :name, :content, :title, :editor, :modified)");
 				$exec->execute([
 			        "dev"=> $gameForum->dev(),
-			        "creation_date"=>$gameForum->creation_date(),
+			        "creation_date"=>date("Y-m-d"),
 			        "name" => $gameForum->name(),
 			        "content"=> $gameForum->content(),
 			        "title"=> $gameForum->title(),
@@ -61,7 +61,15 @@
 			$exec->execute(array(
 				"id" => $gameForum->id(),
 			));
-			$data = $exec->fetch();
-			return $data;
+			$datas = new GameForum($exec->fetch());
+			return $datas;
+		}
+
+		public function maxPageGame ()
+		{
+			$exec = $this->req->prepare("SELECT COUNT(*) FROM game_forum");
+			$exec->execute();
+			$maxTopic = $exec->fetch();
+			return $maxTopic[0];
 		}
 	}

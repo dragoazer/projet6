@@ -75,6 +75,11 @@ class General {
 					$("body").append('<script src="./js/displayGameForum.js?'+version+'"></script>');
 					let displayGameForum = new DisplayGameForum();
 				break;
+
+				case "ShowTopicGame":
+					$("body").append('<script src="./js/displayTopic.js?'+version+'"></script>');
+					let displayTopic = new DisplayTopic();
+				break;
 			}		
 		});
 	}

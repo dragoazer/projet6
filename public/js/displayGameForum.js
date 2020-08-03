@@ -1,13 +1,18 @@
 class DisplayGameForum {
 	constructor () {
 		this.ddbCall(false,0,10);
+		this.maxPage(10);
 		this.modifDisplayTopic();
+		this.actualPage = 1;
 	}
 
 	modifDisplayTopic ()
 	{
-		$("input[name='maxPerPage'], input[name='search']").on("change", (e)=>{
-
+		$("#maxPerPage").on("change", (e)=>{
+			let max = $("#maxPerPage").val();
+			$(".page").empty();
+			this.ddbCall(false,0,max);
+			this.maxPage(max);
 		});
 
 	}
@@ -24,19 +29,52 @@ class DisplayGameForum {
 			},
 			complete: function(response)
 			{	
-				console.log(response);
-				let datas = response.responseText;
-				console.log(datas);
-				datas = JSON.parse(datas);
-				console.log(datas);
+				let text = response.responseText;
+				let datas = JSON.parse(text);
+				$("#displayTopic").empty();
 				for (let data of datas) {
-					$("#displayTopic").append("<li>"+data.title+"</li>")
+					$("#displayTopic").append("<li>"+data.title+" "+data.editor+" "+data.creation_topic+" <a href='index.php?action=ShowTopicGame&id="+data.id+"'><button>VOIR</button></a></li>")
 				}
 			},
 
 			error: function()
 			{
 				$("#displayTopic").append("<li>Aucune données à afficher.</li>")
+			}
+
+		});
+	}
+
+	maxPage (topicPerPage)
+	{
+		const that = this;
+		$.ajax({
+			url: 'index.php?action=maxPageGame',
+
+			complete: function(response)
+			{	
+				let data = response.responseText;
+				let maxPage = data/topicPerPage;
+				maxPage = Math.ceil(maxPage);
+				if (maxPage > 1){
+					for (var i = 1; i <= maxPage; i++) {
+						$(".page").append("<button class='pageButton' id='"+i+"'>"+i+"</button>");
+						let z = i;
+						$("#"+i+"").on("click", (e)=>{
+							if (z != this.actualPage) {
+								let min = z * topicPerPage - topicPerPage;
+								let max = z * topicPerPage;
+								that.ddbCall(false,min,max);
+								this.actualPage = z;
+							}
+						});
+					}
+				}
+			},
+
+			error: function()
+			{
+				$(".page").append("<li>Aucune page à afficher.</li>");
 			}
 
 		});
