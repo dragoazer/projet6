@@ -1,11 +1,15 @@
 class DisplayTopic {
 	constructor ()
 	{
+		this.general = new General;
+		this.searchUrl = new URLSearchParams(document.location.search.substring(1));
+		this.id = this.searchUrl.get("id");
 		this.newComment();
 		this.newContent();
 		this.popupDisapear();
 		this.supprTopic();
-		this.general = new General;
+		this.ajaxDisplayComment(0,10);
+		this.pageGesture();
 	}
 
 	newComment ()
@@ -40,35 +44,13 @@ class DisplayTopic {
 		});
 	}
 
-	supprTopic ()
-	{
-		$("#supprTopic").on("click", (e)=>{
-			$("#verifSuppr").css({"display":"block"});
-			$("#background").css({"display":"block"});
-			$.ajax({
-				url: 'index.php?action=',
-
-				complete : function(response) 
-				{
-					let text = response.responseText;
-					if (text === 'error') {
-						$("#connexion").append("<p class='error'>Erreur, vous ne pouvez pas supprimer ce sujet.</p>");
-					} else {
-						
-					}
-				},
-				error : function ()
-				{
-					$("#connexion").append("<p class='error'>Erreur interne, veullez réessayer votre connexion.</p>");
-				}
-			});
-		});
-	}
-
 	verifNewComment ()
 	{
+		$("#sendNewComment").unbind()
 		$("#sendNewComment").on("click",(e)=>{
 			e.preventDefault();
+
+			$("#background").click();
 
 			let error = false;
 			let errorMsg = '';
@@ -127,49 +109,165 @@ class DisplayTopic {
 
 	ajaxNewComment (comment)
 	{
-		$.ajax({
-			url: 'index.php?action=addGameComment',
-			type: 'POST',
-			data: {
-				comment: comment,
-			},
-			complete : function(response) 
-			{
-				let text = response.responseText;
-				if (text === 'error') {
-					$("#connexion").append("<p class='error'>Erreur, vous ne pouvez pas commenter ce sujet.</p>");
-				} else {
-					
+		if (this.id >= 0 ) {
+			$.ajax({
+				url: 'index.php?action=addGameComment',
+				type: 'POST',
+				context: this,
+				data: {
+					id: this.id,
+					comment: comment,
+				},
+				complete : function(response) 
+				{
+					let text = response.responseText;
+					if (text === 'error') {
+						$("#displayNewComment").append("<p class='error'>Erreur, vous ne pouvez pas commenter ce sujet.</p>");
+					} else {
+						this.ajaxDisplayComment(0,10);
+						this.pageGesture();
+					}
+				},
+				error : function ()
+				{
+					$("#displayNewComment").append("<p class='error'>Erreur interne.</p>");
 				}
-			},
-			error : function ()
-			{
-				$("#connexion").append("<p class='error'>Erreur interne, veullez réessayer votre connexion.</p>");
-			}
-		});
+			});
+		}
 	}
 
 	ajaxNewContent (newContent)
 	{
+		if (this.id >= 0 ) {
+			$.ajax({
+				url: 'index.php?action=modifyTopicGame',
+				type: 'POST',
+				context: this,
+				data: {
+					id: this.id,
+					newContent: newContent,
+				},
+				complete : function(response) 
+				{
+					let text = response.responseText;
+					if (text === 'error') {
+						$("").append("<p class='error'>Erreur, vous ne pouvez pas modifier ce sujet.</p>");
+					} else {
+						Location.reload();
+					}
+				},
+				error : function ()
+				{
+					$("").append("<p class='error'>Erreur interne.</p>");
+				}
+			});
+		}
+	}
+
+	ajaxDisplayComment (min, max)
+	{
+		$("#displayComment").empty();
+		if (this.id >= 0 ) {
+			$.ajax({
+				url: 'index.php?action=displayGameComment',
+				type: 'POST',
+				context: this,
+				data: {
+					forumId: this.id,
+					min: min,
+					max: max,
+				},
+				complete : function(response)
+				{
+					let text = response.responseText;
+					if (text != 'errorNoCount') {
+
+						let datas = JSON.parse(text);
+						$("#displayComment").empty();
+						for (var i = 0; i < datas.length; i++) {
+							$("#displayComment").append("<li>"+datas[i].pseudo+" "+datas[i].post_date+" "+datas[i].comment+"</li>")
+						}
+					} else {
+						$("#displayComment").empty();
+						$("#displayComment").append("<p id='firstComment'>Soyez le premier à commenter ! </p>");
+					} 
+				},
+				error : function ()
+				{
+					$("displayComment").append("<p class='error'>Erreur interne.</p>");
+				}
+			});
+		}
+	}
+
+	supprTopic ()
+	{
+		$("#supprTopic").on("click", (e)=>{
+			$("#verifSuppr").css({"display":"block"});
+			$("#background").css({"display":"block"});
+			$("#spprTrue").on("click", (e)=>{
+				e.preventDefault();
+				this.ajaxSuppr();
+			});
+			$("#spprFalse").on("click", (e)=>{
+				e.preventDefault();
+				$("#background").click();
+			});
+		});
+	}
+
+	ajaxSuppr ()
+	{
 		$.ajax({
-			url: 'index.php?action=modifyTopicGame',
-			type: 'POST',
+			url: 'index.php?action=supprGameTopic',
+			context: this,
+			type: "POST",
 			data: {
-				newContent: newContent,
+				id: this.id
 			},
 			complete : function(response) 
 			{
 				let text = response.responseText;
 				if (text === 'error') {
-					$("#connexion").append("<p class='error'>Erreur, vous ne pouvez pas modifier ce sujet.</p>");
+					$("#verifSuppr").append("<p class='error'>Erreur, vous ne pouvez pas supprimer ce sujet.</p>");
 				} else {
-					
+					//window.location.replace("index.php?action=displayGameForum");
 				}
 			},
 			error : function ()
 			{
-				$("#connexion").append("<p class='error'>Erreur interne, veullez réessayer votre connexion.</p>");
+				$("#verifSuppr").append("<p class='error'>Erreur interne.</p>");
 			}
 		});
+	}
+
+	pageGesture ()
+	{
+		 $.ajax({
+		 	context: this,
+		 	type: 'POST',
+		 	url: 'index.php?action=maxPageComment',
+		 	data: {
+		 		id: this.id,
+		 	},
+		 	complete : function (response)
+		 	{
+		 		let text = response.responseText;
+		 		if (text != "error") {
+		 			let maxPage = Math.ceil(text / 10);
+		 			$(".page").empty();
+		 			if (maxPage > 1) {
+			 			for (let i = 1; i <= maxPage; i++) {
+			 				$(".page").append("<button id='page"+i+"'>"+i+"</button>");
+			 				$("#page"+i).on("click",(e)=>{
+			 					let min = i*10-10;
+			 					let max = i*10;
+			 					this.ajaxDisplayComment(min,max);
+			 				});
+			 			}
+		 			}
+		 		}
+		 	}
+		 });
 	}
 }

@@ -30,11 +30,13 @@ class DisplayGameForum {
 			complete: function(response)
 			{	
 				let text = response.responseText;
-				let datas = JSON.parse(text);
-				$("#displayTopic").empty();
-				for (let data of datas) {
-					$("#displayTopic").append("<li>"+data.title+" "+data.editor+" "+data.creation_topic+" <a href='index.php?action=ShowTopicGame&id="+data.id+"'><button>VOIR</button></a></li>")
-				}
+				if (text != '"error"') {
+					let datas = JSON.parse(text);
+					$("#displayTopic").empty();
+					for (let data of datas) {
+						$("#displayTopic").append("<li>"+data.title+" "+data.editor+" "+data.creation_topic+" <a href='index.php?action=ShowTopicGame&id="+data.id+"'><button>VOIR</button></a></li>")
+					}
+				} 
 			},
 
 			error: function()

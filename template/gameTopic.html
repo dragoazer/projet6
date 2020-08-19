@@ -4,9 +4,9 @@
             <button id="supprTopic">Suprimer le sujet</button>
             <div id="verifSuppr">
                 <form>
-                    <label>Êtes vous sur de vouloir supprimer ce sujet ?</label>>
-                    <button class="sppr" value="yes">Oui</button>
-                    <button class="sppr" value="no">Non</button>
+                    <label>Êtes vous sur de vouloir supprimer ce sujet ?</label>
+                    <button id="spprTrue" value="true">Oui</button>
+                    <button id="spprFalse" value="false">Non</button>
                 </form>
             </div>
 
@@ -26,7 +26,8 @@
     	{% if data.modified == 1 %}
     		<p id="modified">modifié</p>
     	{% endif %}
-
+        <p>page<span class="page"></span></p>
+        <div id="displayComment"></div>
     	{% if session != "" %}
     	<hr>
     	<button id="comment">Commenter</button>

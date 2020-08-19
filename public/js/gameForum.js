@@ -74,7 +74,6 @@ class GameForum {
 			complete: function(response) 
 			{		
 				var text = response.responseText;
-				$("#inscription").empty();
 				if (text === "error") {
 					$("#newTopic").append("<p class='error'>Le titre est déjà utilisé.</a></p>");
 				} else {

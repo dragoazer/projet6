@@ -47,7 +47,7 @@
     		}  
     	}
  
-    	public function setpseudo($pseudo)
+    	public function setPseudo($pseudo)
   		{
     		if (is_string($pseudo))
     		{

@@ -5,34 +5,43 @@
 
 	use Projet6\Controller\GeneralController;
 	use Projet6\Controller\AccountController;
-	use Projet6\Controller\gameForController;
+	use Projet6\Controller\GameForController;
+    use Projet6\Controller\GameComController;
 
 	$generalController = new GeneralController();
 	$accountController = new AccountController();
-	$gameForController = new gameForController();
+	$gameForController = new GameForController();
+    $gameComController = new GameComController();
 
 	if (isset($_GET["action"])) {
 	 	switch ($_GET["action"]) {
 	 		case 'home':
         		$generalController->displayHome();
         		break;
-////////////// FORUM
-////////////// GAME
+/////////////////// FORUM //////////////////
+//////////////// GAME ///////////////////
+///////////DISPLAY
         	case 'displayGameForum':
         		$gameForController->displayGameForum();
         		break;
-
-            case 'newTopicGame':
-                $gameForController->newTopic();
-                break;
 
             case 'displayNewTopicGame':
                 $gameForController->displayNewTopic();
                 break;
 
-        	case 'ShowTopicGame':
-        		$gameForController->displayTopic();
-        		break;
+            case 'ShowTopicGame':
+                $gameForController->displayTopic();
+                break;
+
+//////// UTILITY
+
+            case 'newTopicGame':
+                $gameForController->newTopic();
+                break;
+
+            case 'supprGameTopic':
+                $gameForController->supprGameTopic();
+                break;
 
             case 'modifyTopicGame':
                 $gameForController->modifyTopic();
@@ -46,11 +55,24 @@
                 $gameForController->maxPageGame();
                 break;
 
+///////// COMMENT GAME
             case 'addGameComment':
-                $gameForController->addGameComment();
+                $gameComController->addGameComment();
                 break;
 
-/////////// ACCOUNT GESTURE
+            case 'supprGameComment':
+                $gameComController->supprGameComment();
+                break;
+
+            case 'displayGameComment':
+                $gameComController->displayGameComment();
+                break;
+
+            case 'maxPageComment':
+                $gameComController->maxPageComment();
+                break;
+///////////////// MUSIC ///////////////////
+/////////// ACCOUNT GESTURE ////////////////
         	case 'registration':
         		$accountController->displayRegistration();
         		break;

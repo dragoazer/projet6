@@ -20,7 +20,6 @@
 			]);
 			$this->twig->addExtension(new \Twig\Extension\DebugExtension());
 			$this->gameForModel = new GameForModel();
-			$this->gameCommentModel = new GameCommentModel();
 		}
 
 
@@ -42,15 +41,17 @@
 
 		public function newTopic ()
 		{
-			$data = [
-				"dev" => $_POST['creator'],
-				"name" => $_POST['name'],
-				"content" => $_POST['content'],
-				"title" =>  $_POST['title'],
-				"editor" => $_SESSION['connected']["pseudo"]
-			];
-			$newTopic = new GameForum($data);
-			$newTopicCreated = $this->gameForModel->newTopic($newTopic);
+			if ($_SESSION["connected"]) {
+				$data = [
+					"dev" => $_POST['creator'],
+					"name" => $_POST['name'],
+					"content" => $_POST['content'],
+					"title" =>  $_POST['title'],
+					"editor" => $_SESSION['connected']["pseudo"]
+				];
+				$newTopic = new GameForum($data);
+				$newTopicCreated = $this->gameForModel->newTopic($newTopic);
+			}
 		}
 
 		public function displayNewTopic ()
@@ -80,12 +81,14 @@
 
 		public function modifyTopic ()
 		{
-			$data = [
-				"id" => $_POST['id'],
-				"content" => $_POST['content'],
-			];
-			$topic = new GameForum($data);
-			$modelTopic = $this->gameForModel->newTopic($topic);
+			if ($_SESSION["connected"]["user_type"] == "admin") {
+				$data = [
+					"id" => $_POST['id'],
+					"content" => $_POST['content'],
+				];
+				$topic = new GameForum($data);
+				$modelTopic = $this->gameForModel->newTopic($topic);
+			}
 		}
 
 		public function  maxPageGame ()
@@ -94,8 +97,22 @@
 			echo $modelTopic;
 		}
 
-		public function addGameComment ()
+		public function supprGameTopic ()
 		{
-
+			if ($_SESSION['connected']["user_type"] === "admin") {
+				$data = [
+					"id" => $_POST["id"],
+				];
+				$suprr = new GameForum($data);
+				$supprTopic = $this->gameForModel->supprGameTopic($suprr);
+				$data = [
+					"forumId" => $_POST["id"],
+				];
+				$gameCommentModel = new GameCommentModel();
+				$suprr = new GameComment($data);
+				$supprTopic = $gameCommentModel->supprGameCom($data);
+			} else {
+				echo "error";
+			}
 		}
 	}

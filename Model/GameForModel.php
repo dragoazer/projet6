@@ -72,4 +72,12 @@
 			$maxTopic = $exec->fetch();
 			return $maxTopic[0];
 		}
+
+		public function supprGameTopic (GameForum $gameForum)
+		{
+			$exec = $this->req->prepare("DELETE FROM game_forum WHERE id=?");
+			$exec->execute(array(
+				"id" => $gameForum->id()
+			));
+		}
 	}
