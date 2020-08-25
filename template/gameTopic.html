@@ -1,5 +1,6 @@
     {% extends "template.html" %}
     {% block content %}
+
     	{% if session != "" and session.user_type == "admin" %}
             <button id="supprTopic">Suprimer le sujet</button>
             <div id="verifSuppr">
@@ -18,26 +19,43 @@
     				<button id="sendNewContent"> Envoyer</button>
     			</form>
     		</div>
-    	{% endif %}
+        {# % elseif session.user_type != "admin" % #}
+            <a href="index.php?action=reportGameTopic&id={{ id }}"><button id="report">Signaler</button></a>
+            <div id="verifReport">
+                <form>
+                    <label>Pour quoi voulez vous signaler ce sujet ?</label>
+                    <select>
+                        <option value="offensiveInsult">Propos injurieux</option>
+                        <option value="fakeNews">Fausses informations</option>
+                        <option value="unsuitableContent">Contenue inapproprié</option>
+                        <button id="sendReportInfo">Envoyer</button>
+                    </select>
+                </form> 
+            </div>
+        {% endif %}
 
-    	<p>Titre: {{ data.title }}</p>
-    	<p>Contenue {{ data.content }}</p>
+        <a href="index.php?action=displayGameForum"><button>Retour</button></a>
+        <div id="mainContent">
+        	<p>Titre: {{ data.title }}</p>
+        	<p>Contenue {{ data.content }}</p>
+            {% if data.modified == 1 %}
+                    <p id="modified">modifié</p>
+            {% endif %}
+        </div>
 
-    	{% if data.modified == 1 %}
-    		<p id="modified">modifié</p>
-    	{% endif %}
-        <p>page<span class="page"></span></p>
+        
         <div id="displayComment"></div>
-    	{% if session != "" %}
-    	<hr>
-    	<button id="comment">Commenter</button>
-    	<hr>
-    	<div id='displayNewComment'>
-    		<form>
-    			<label>Entrer votre commentaire</label>
-    			<input type="text" name="comment">
-    			<button id="sendNewComment">Envoyer</button>
-    		</form>
-    	</div>
+            <p>page<span class="page"></span></p>
+        {% if session != "" %}
+            <hr>
+            <button id="comment">Commenter</button>
+            <hr>
+            <div id='displayNewComment'>
+    		    <form>
+    			    <label>Entrer votre commentaire</label>
+    			    <input type="text" name="comment">
+    			    <button id="sendNewComment">Envoyer</button>
+    		    </form>
+    	    </div>
     	{% endif %}
     {% endblock %}

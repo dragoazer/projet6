@@ -75,9 +75,28 @@
 
 		public function supprGameTopic (GameForum $gameForum)
 		{
-			$exec = $this->req->prepare("DELETE FROM game_forum WHERE id=?");
+			$exec = $this->req->prepare("DELETE FROM game_forum WHERE id = :id");
 			$exec->execute(array(
 				"id" => $gameForum->id()
+			));
+		}
+
+		public function modifyTopic (GameForum $gameForum)
+		{
+			$exec = $this->req->prepare("UPDATE game_forum SET content = :content, modified = :modified  WHERE id = :id");
+			$exec->execute(array(
+				"content" => $gameForum->content(),
+				"id" => $gameForum->id(),
+				"modified" => $gameForum->modified()
+			));
+		}
+
+		public function reportGameTopic (GameForum $gameForum)
+		{
+			$ecec = $this->req->prepare("UPDATE game_forum SET reported = reported WHERE id = :id");
+			$exec->execute(array(
+				"id" => $gameForum->id(),
+				"reported" => $gameForum->reported()
 			));
 		}
 	}

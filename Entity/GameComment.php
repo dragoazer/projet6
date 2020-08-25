@@ -12,6 +12,7 @@
     private  $comment;
     private  $post_date;
     private  $forumId;
+    private  $reported;
 	
 
     public function __construct (array $data)
@@ -29,6 +30,7 @@
     public function comment () {return $this->comment;}
     public function post_date () {return $this->post_date;}
     public function forumId () {return $this->forumId;}
+    public function reported () {return $this->reported;}
 
     public function hydrate(array $data)
     {
@@ -83,4 +85,12 @@
             $this->forumId = $forumId;
         }  
       }
+
+      public function setReported($reported)
+      {
+        if (is_int($reported) OR is_string($reported))
+        {
+            $this->reported =  $reported;
+        }
+      }                       
   }

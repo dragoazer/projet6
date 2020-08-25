@@ -55,6 +55,10 @@
                 $gameForController->maxPageGame();
                 break;
 
+            case 'reportGameTopic':
+                $gameForController->reportGameTopic();
+                break;
+
 ///////// COMMENT GAME
             case 'addGameComment':
                 $gameComController->addGameComment();
@@ -70,6 +74,10 @@
 
             case 'maxPageComment':
                 $gameComController->maxPageComment();
+                break;
+
+            case 'reportComment':
+                $gameComController->reportComment();
                 break;
 ///////////////// MUSIC ///////////////////
 /////////// ACCOUNT GESTURE ////////////////

@@ -76,6 +76,7 @@
 				'css' => '/projet6/public/css/displayTopic.css?'.time(),
 				'title' => `Sujet: `.$modelTopic->title().`.`,
 				'session' => $_SESSION["connected"] ?? "",
+				"id" => $_GET["id"],
 			]);
 		}
 
@@ -85,9 +86,10 @@
 				$data = [
 					"id" => $_POST['id'],
 					"content" => $_POST['content'],
+					"modified" => 1
 				];
 				$topic = new GameForum($data);
-				$modelTopic = $this->gameForModel->newTopic($topic);
+				$modelTopic = $this->gameForModel->modifyTopic($topic);
 			}
 		}
 
@@ -105,14 +107,25 @@
 				];
 				$suprr = new GameForum($data);
 				$supprTopic = $this->gameForModel->supprGameTopic($suprr);
+				/////////////////////////////////// Comment Entity Model ->
 				$data = [
 					"forumId" => $_POST["id"],
 				];
 				$gameCommentModel = new GameCommentModel();
 				$suprr = new GameComment($data);
-				$supprTopic = $gameCommentModel->supprGameCom($data);
+				$supprTopic = $gameCommentModel->supprGameCom($suprr);
 			} else {
 				echo "error";
 			}
+		}
+
+		public function reportGameTopic ()
+		{
+			$data = [
+				"reported" => 1,
+				"id" => $_GET["id"]
+			];
+			$report = new GameForum($data);
+			$reportTopic = $this->gameForModel->reportGameTopic($report);
 		}
 	}

@@ -6,10 +6,47 @@ class DisplayTopic {
 		this.id = this.searchUrl.get("id");
 		this.newComment();
 		this.newContent();
+		this.report();
 		this.popupDisapear();
 		this.supprTopic();
 		this.ajaxDisplayComment(0,10);
 		this.pageGesture();
+	}
+
+	report ()
+	{
+		$("#report").on("click", (e)=>{
+			e.preventDefault();
+			$("body").css("overflow", "hidden");
+			$("#background").css({"display":"block"});
+			$("#verifReport").css({"display":"block"});
+			this.sendReport();
+		});
+	}
+
+	sendReport ()
+	{
+		$("sendReportInfo").on("click", (e)=>{
+			e.preventDefault();
+			$.ajax({
+				url: 'index.php?action=displayGameComment',
+				type: 'POST',
+				context: this,
+				data: {
+					forumId: this.id,
+					min: min,
+					max: max,
+				},
+				complete : function(response)
+				{
+					$("#background").click();
+				},
+				error : function ()
+				{
+					$("verifReport").append("<p class='error'>Erreur interne.</p>");
+				}
+			});
+		});
 	}
 
 	newComment ()
@@ -20,7 +57,6 @@ class DisplayTopic {
 			$("#displayNewComment").css({"display":"block"});
 			this.verifNewComment();
 		});
-
 	}
 
 	newContent ()
@@ -41,6 +77,7 @@ class DisplayTopic {
 			$("#displayModifTopic").css({"display":"none"});
 			$("#displayNewComment").css({"display":"none"});
 			$("#verifSuppr").css({"display":"none"});
+			$("#verifReport").css({"display":"none"});
 		});
 	}
 
@@ -145,15 +182,15 @@ class DisplayTopic {
 				context: this,
 				data: {
 					id: this.id,
-					newContent: newContent,
+					content: newContent,
 				},
 				complete : function(response) 
 				{
 					let text = response.responseText;
 					if (text === 'error') {
-						$("").append("<p class='error'>Erreur, vous ne pouvez pas modifier ce sujet.</p>");
+						$("#mainContent").append("<p class='error'>Erreur, vous ne pouvez pas modifier ce sujet.</p>");
 					} else {
-						Location.reload();
+						document.location.reload(true);
 					}
 				},
 				error : function ()
@@ -185,7 +222,7 @@ class DisplayTopic {
 						let datas = JSON.parse(text);
 						$("#displayComment").empty();
 						for (var i = 0; i < datas.length; i++) {
-							$("#displayComment").append("<li>"+datas[i].pseudo+" "+datas[i].post_date+" "+datas[i].comment+"</li>")
+							$("#displayComment").append("<li>"+datas[i].pseudo+" "+datas[i].post_date+" "+datas[i].comment+"<a href=''><button>Signaler</button></a></li>")
 						}
 					} else {
 						$("#displayComment").empty();
@@ -231,7 +268,7 @@ class DisplayTopic {
 				if (text === 'error') {
 					$("#verifSuppr").append("<p class='error'>Erreur, vous ne pouvez pas supprimer ce sujet.</p>");
 				} else {
-					//window.location.replace("index.php?action=displayGameForum");
+					window.location.replace("index.php?action=displayGameForum");
 				}
 			},
 			error : function ()

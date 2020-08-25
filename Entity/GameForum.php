@@ -16,6 +16,7 @@
     private  $editor;
     private  $creation_topic;
     private  $modified;
+    private  $reported;
     
 
     public function __construct (array $data)
@@ -37,6 +38,7 @@
     public function editor() { return $this->editor;}
     public function creation_topic() { return $this->creation_topic;}
     public function modified() { return $this->modified;}
+    public function reported() { return $this->reported;}
 
     public function hydrate(array $data)
     {
@@ -118,6 +120,14 @@
         if (is_int($modified))
         {
             $this->modified =  $modified;
+        }
+      }
+
+      public function setReported($reported)
+      {
+        if (is_int($reported) OR is_string($reported))
+        {
+            $this->reported =  $reported;
         }
       }    		  				  		  		
 	}

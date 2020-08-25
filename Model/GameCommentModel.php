@@ -56,9 +56,9 @@
 
 		public function supprGameCom (GameComment $gameComment)
 		{
-			$exec = $this->req->prepare("DELETE FROM game_comment WHERE forumId=?");
+			$exec = $this->req->prepare("DELETE FROM game_comment WHERE forumId = :forumId");
 			$exec->execute(array(
-				"forumId" => $gameForum->forumId()
+				"forumId" => $gameComment->forumId()
 			));
 		}
 	}
