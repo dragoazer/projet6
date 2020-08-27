@@ -7,11 +7,13 @@
 	use Projet6\Controller\AccountController;
 	use Projet6\Controller\GameForController;
     use Projet6\Controller\GameComController;
+    use Projet6\Controller\ReportController;
 
 	$generalController = new GeneralController();
 	$accountController = new AccountController();
 	$gameForController = new GameForController();
     $gameComController = new GameComController();
+    $reportController  = new  ReportController();
 
 	if (isset($_GET["action"])) {
 	 	switch ($_GET["action"]) {
@@ -55,10 +57,6 @@
                 $gameForController->maxPageGame();
                 break;
 
-            case 'reportGameTopic':
-                $gameForController->reportGameTopic();
-                break;
-
 ///////// COMMENT GAME
             case 'addGameComment':
                 $gameComController->addGameComment();
@@ -76,9 +74,15 @@
                 $gameComController->maxPageComment();
                 break;
 
-            case 'reportComment':
-                $gameComController->reportComment();
+////////////// REPORT ///////////////
+            case 'reportGameTopic':
+                $reportController->reportGameTopic();
                 break;
+
+            case 'reportComment':
+                $reportController->reportComment();
+                break;
+
 ///////////////// MUSIC ///////////////////
 /////////// ACCOUNT GESTURE ////////////////
         	case 'registration':

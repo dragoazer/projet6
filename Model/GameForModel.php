@@ -91,12 +91,4 @@
 			));
 		}
 
-		public function reportGameTopic (GameForum $gameForum)
-		{
-			$ecec = $this->req->prepare("UPDATE game_forum SET reported = reported WHERE id = :id");
-			$exec->execute(array(
-				"id" => $gameForum->id(),
-				"reported" => $gameForum->reported()
-			));
-		}
 	}

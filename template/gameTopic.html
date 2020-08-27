@@ -24,12 +24,13 @@
             <div id="verifReport">
                 <form>
                     <label>Pour quoi voulez vous signaler ce sujet ?</label>
-                    <select>
+                    <select id="reportValue">
                         <option value="offensiveInsult">Propos injurieux</option>
                         <option value="fakeNews">Fausses informations</option>
                         <option value="unsuitableContent">Contenue inapproprié</option>
-                        <button id="sendReportInfo">Envoyer</button>
+                        <option value="spam">Publication en grande quantité indésirable.</option>
                     </select>
+                    <button id="sendReportInfo">Envoyer</button>
                 </form> 
             </div>
         {% endif %}

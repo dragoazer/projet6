@@ -118,14 +118,4 @@
 				echo "error";
 			}
 		}
-
-		public function reportGameTopic ()
-		{
-			$data = [
-				"reported" => 1,
-				"id" => $_GET["id"]
-			];
-			$report = new GameForum($data);
-			$reportTopic = $this->gameForModel->reportGameTopic($report);
-		}
 	}

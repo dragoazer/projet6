@@ -26,16 +26,16 @@ class DisplayTopic {
 
 	sendReport ()
 	{
-		$("sendReportInfo").on("click", (e)=>{
+		$("#sendReportInfo").on("click", (e)=>{
 			e.preventDefault();
+			let report_type = $("#reportValue").val();	
 			$.ajax({
-				url: 'index.php?action=displayGameComment',
+				url: 'index.php?action=reportGameTopic',
 				type: 'POST',
 				context: this,
 				data: {
-					forumId: this.id,
-					min: min,
-					max: max,
+					topic_id: this.id,
+					report_type: report_type
 				},
 				complete : function(response)
 				{
