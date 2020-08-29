@@ -1,6 +1,6 @@
 /* display topic game css */
 
-#displayModifTopic, #displayNewComment, #verifSuppr, #verifReport {
+#displayModifTopic, #displayNewComment, #verifSuppr, #verifReport, #verifCommentReport {
 	display: none;
 	width: 25%;
 	background: white;

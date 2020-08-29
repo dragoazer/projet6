@@ -19,7 +19,7 @@
     				<button id="sendNewContent"> Envoyer</button>
     			</form>
     		</div>
-        {# % elseif session.user_type != "admin" % #}
+        {# % elseif session != "" and session.user_type != "admin" % #}
             <a href="index.php?action=reportGameTopic&id={{ id }}"><button id="report">Signaler</button></a>
             <div id="verifReport">
                 <form>
@@ -33,6 +33,22 @@
                     <button id="sendReportInfo">Envoyer</button>
                 </form> 
             </div>
+
+            {% if session != "" %}
+                <div id="verifCommentReport">
+                     <form>
+                        <label>Pour quoi voulez vous signaler ce commentaire ?</label>
+                        <select id="reportCommentValue">
+                            <option value="offensiveInsult">Propos injurieux</option>
+                            <option value="fakeNews">Fausses informations</option>
+                            <option value="unsuitableContent">Contenue inapproprié</option>
+                            <option value="spam">Publication en grande quantité indésirable.</option>
+                        </select>
+                        <button id="sendReportComment">Envoyer</button>
+                    </form> 
+                </div>
+            {% endif %}
+
         {% endif %}
 
         <a href="index.php?action=displayGameForum"><button>Retour</button></a>

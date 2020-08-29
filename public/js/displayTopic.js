@@ -4,14 +4,59 @@ class DisplayTopic {
 		this.general = new General;
 		this.searchUrl = new URLSearchParams(document.location.search.substring(1));
 		this.id = this.searchUrl.get("id");
-		this.newComment();
-		this.newContent();
-		this.report();
-		this.popupDisapear();
-		this.supprTopic();
 		this.ajaxDisplayComment(0,10);
 		this.pageGesture();
+		this.newComment();
+		this.newContent();
+		this.popupDisapear();
+		this.supprTopic();
+		this.report();
+		this.reportComment();
 	}
+
+
+	reportComment ()
+	{
+		console.log($(".reportButton").length);
+		for (var i = 0; i <= $(".reportButton").length; i++) {
+			console.log(i);
+			$(".reportButton").eq(i).on("click", (e)=>{
+				e.preventDefault();
+				let valeur = e.val();	
+				console.log("valeur");
+				$("body").css("overflow", "hidden");
+				$("#background").css({"display":"block"});
+				$("#verifCommentReport").css({"display":"block"});
+				//this.sendCommentReport();
+			});
+		}
+	}
+
+	/*sendCommentReport ()
+	{
+		$("#sendReportComment").on("click", (e)=>{
+			e.preventDefault();
+			let report_type = $("#reportCommentValue").val();	
+			$.ajax({
+				url: 'index.php?action=reportGameTopic',
+				type: 'POST',
+				context: this,
+				data: {
+					topic_id: this.id,
+					report_type: report_type,
+					comment_id: comment_id
+				},
+				complete : function(response)
+				{
+					$("#background").click();
+				},
+				error : function ()
+				{
+					$("verifReport").append("<p class='error'>Erreur interne.</p>");
+				}
+			});
+		});
+	}*/
 
 	report ()
 	{
@@ -222,7 +267,7 @@ class DisplayTopic {
 						let datas = JSON.parse(text);
 						$("#displayComment").empty();
 						for (var i = 0; i < datas.length; i++) {
-							$("#displayComment").append("<li>"+datas[i].pseudo+" "+datas[i].post_date+" "+datas[i].comment+"<a href=''><button>Signaler</button></a></li>")
+							$("#displayComment").append("<li>"+datas[i].pseudo+" "+datas[i].post_date+" "+datas[i].comment+"<button class='reportButton' value='"+datas[i].id+"''>Signaler</button></li>")
 						}
 					} else {
 						$("#displayComment").empty();

@@ -80,7 +80,7 @@
                 break;
 
             case 'reportComment':
-                $reportController->reportComment();
+                $reportController->reportGameComment();
                 break;
 
 ///////////////// MUSIC ///////////////////
