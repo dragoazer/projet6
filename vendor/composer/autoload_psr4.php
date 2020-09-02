@@ -12,4 +12,5 @@ return array(
     'Projet6\\Model\\' => array($baseDir . '/Model'),
     'Projet6\\Entity\\' => array($baseDir . '/Entity'),
     'Projet6\\Controller\\' => array($baseDir . '/Controller'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
 );

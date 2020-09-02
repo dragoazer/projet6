@@ -79,7 +79,7 @@
                 $reportController->reportGameTopic();
                 break;
 
-            case 'reportComment':
+            case 'reportGammeComment':
                 $reportController->reportGameComment();
                 break;
 

@@ -26,6 +26,7 @@ class ComposerStaticInita9350c59019a5b542fda2225301ec76c
             'Projet6\\Model\\' => 14,
             'Projet6\\Entity\\' => 15,
             'Projet6\\Controller\\' => 19,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
     );
 
@@ -53,6 +54,10 @@ class ComposerStaticInita9350c59019a5b542fda2225301ec76c
         'Projet6\\Controller\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Controller',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
     );
 

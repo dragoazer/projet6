@@ -11,34 +11,33 @@ class DisplayTopic {
 		this.popupDisapear();
 		this.supprTopic();
 		this.report();
-		this.reportComment();
 	}
 
 
 	reportComment ()
 	{
-		console.log($(".reportButton").length);
-		for (var i = 0; i <= $(".reportButton").length; i++) {
-			console.log(i);
-			$(".reportButton").eq(i).on("click", (e)=>{
-				e.preventDefault();
-				let valeur = e.val();	
-				console.log("valeur");
-				$("body").css("overflow", "hidden");
-				$("#background").css({"display":"block"});
-				$("#verifCommentReport").css({"display":"block"});
-				//this.sendCommentReport();
-			});
-		}
+		$(document).ready((e)=> {
+			for (var i = 0; i <= $(".reportButton").length-1; i++) {
+				let z = i;
+				$(".reportButton").eq(z).on("click", (e)=>{
+					e.preventDefault();
+					let value = $(".reportButton").eq(z).val();
+					$("body").css("overflow", "hidden");
+					$("#background").css({"display":"block"});
+					$("#verifCommentReport").css({"display":"block"});
+					this.sendCommentReport(value);
+				});
+			}
+		});
 	}
 
-	/*sendCommentReport ()
+	sendCommentReport (comment_id)
 	{
 		$("#sendReportComment").on("click", (e)=>{
 			e.preventDefault();
 			let report_type = $("#reportCommentValue").val();	
 			$.ajax({
-				url: 'index.php?action=reportGameTopic',
+				url: 'index.php?action=reportGammeComment',
 				type: 'POST',
 				context: this,
 				data: {
@@ -56,7 +55,7 @@ class DisplayTopic {
 				}
 			});
 		});
-	}*/
+	}
 
 	report ()
 	{
@@ -123,6 +122,7 @@ class DisplayTopic {
 			$("#displayNewComment").css({"display":"none"});
 			$("#verifSuppr").css({"display":"none"});
 			$("#verifReport").css({"display":"none"});
+			$("#verifCommentReport").css({"display":"none"});
 		});
 	}
 
@@ -267,8 +267,9 @@ class DisplayTopic {
 						let datas = JSON.parse(text);
 						$("#displayComment").empty();
 						for (var i = 0; i < datas.length; i++) {
-							$("#displayComment").append("<li>"+datas[i].pseudo+" "+datas[i].post_date+" "+datas[i].comment+"<button class='reportButton' value='"+datas[i].id+"''>Signaler</button></li>")
+							$("#displayComment").append("<li>"+datas[i].pseudo+" "+datas[i].post_date+" "+datas[i].comment+"<button class='reportButton' value='"+datas[i].id+"'>Signaler</button></li>")
 						}
+						$(window).on("load", this.reportComment());
 					} else {
 						$("#displayComment").empty();
 						$("#displayComment").append("<p id='firstComment'>Soyez le premier à commenter ! </p>");
