@@ -6,8 +6,13 @@
 
 	class ReportController 
 	{
+		private $twig;
+
 		public function __construct ()
 		{
+			$loader = new \Twig\Loader\FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/projet6/template');
+			$this->twig = new \Twig\Environment($loader, ['debug' => true,]);
+			$this->twig->addExtension(new \Twig\Extension\DebugExtension());
 			$this->reportModel = new ReportModel();
 		}
 
@@ -32,5 +37,50 @@
 			];
 			$report = new ReportGesture($data);
 			$reportTopic = $this->reportModel->reportGameComment($report);
+		}
+
+		public function displayForumGesture ()
+		{
+			$datas =  $this->reportModel->ShowReportData(0,intval(8446744073709551615));
+			
+			//////// count number of occurence
+			$array = (array) $datas;
+			foreach ($array as $key => $value) {
+				if ($value->comment_id() == "") {
+					$arr[] = $value->topic_id();
+				}
+			}
+			foreach ($array as $key => $value) {
+				if ($value->comment_id() != "") {
+					$arrCom[] = $value->comment_id();
+				}
+			}
+
+			$nmbOccTopic = array_count_values($arr);
+			$nmbOccComment = array_count_values($arrCom);
+			//////////////////
+
+			$template = $this->twig->load('forumGesture.html');
+			echo $template->render([
+				'title' => 'Gestion de forum.',
+				'datas' => $datas,
+				'nmbOccTopic' => $nmbOccTopic,
+				"nmbOccComment" => $nmbOccComment
+			]);
+		}
+
+		public function maxPage ()
+		{
+
+		}
+
+		public function displayReportDetails ()
+		{
+			$data = json_decode($_POST["press"], true);
+			$details = $this->reportModel->displayReportDetails($data["type"], $data["id"]);
+			var_dump($details);
+			/*if ($data["foreign"] != "") {
+				$topicDetails = $this->reportModel->displayReportDetails($data["foreign"], $details->forumId());
+			}*/
 		}
 	}

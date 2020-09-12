@@ -4,17 +4,23 @@
 	/**
 	 * 
 	 */
-	class ReportGesture 
+	class ReportGesture  implements \JsonSerializable
 	{
 		private  $id;
 		private  $topic_id;
 		private  $comment_id;
 		private  $topic_type;
-		private  $report_type ;
+		private  $report_type;
+    private  $creation_date;
 
     public function __construct (array $data)
     {
       $this->hydrate($data);
+    }
+    
+    public function jsonSerialize ()
+    {
+      return get_object_vars($this);
     }
 
 		public function id() { return $this->id;}
@@ -22,6 +28,7 @@
 		public function comment_id() { return $this->comment_id;}
 		public function topic_type() { return $this->topic_type;}
 		public function report_type () { return $this->report_type;}
+    public function creation_date() { return $this->creation_date;}
 
     public function hydrate(array $data)
     {
@@ -75,5 +82,12 @@
     		}
   		}
 
+      public function setCreation_date($creation_date)
+      {
+        if (is_string($creation_date))
+        {
+            $this->creation_date =  $creation_date;
+        }
+      }
   		    		  			
 	}

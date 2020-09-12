@@ -1,0 +1,85 @@
+{% extends "template.html" %}
+{% block content %}
+	<form>
+		<label for="typeTopic">Type de forum</label>
+		<select name="typeTopic" id="typeTopic">
+			<option value="none">Aucun</option>
+			<option value="game">Jeux</option>
+			<option value="music">Musique</option>
+			<option value="manga">Manga</option>
+		</select>
+
+		<label for="typeTopicCom">afficher les commentaires ou les sujets?</label>
+		<select name="typeTopicCom" id="typeTopicCom">
+			<option value="none"> Aucun des deux</option>
+			<option value="com">Commentaire</option>
+			<option value="topic">Sujet</option>
+		</select>
+
+		<label for="numberDisplay">Nombre de signalement afficher par page.</label>
+		<select name="numberDisplay" id="numberDisplay">
+			<option value="10">10</option>
+			<option value="20">20</option>
+			<option value="50">50</option>
+		</select>
+
+		<label for="orderBy">Ordonner par</label>
+		<select name="orderBy" id="orderBy">
+			<option value="date">Date</option>
+			<option value="nmbReport">Nombre de signalement</option>
+		</select>
+	</form>
+
+    <table>
+    	<thead>
+	        <tr>
+	            <th>Type de signalement</th>	        
+	            <th>Commentaire ou sujet</th>
+	            <th>Date</th>
+            	<th>Nombre de signalement</th>
+            	<th>Action</th>
+        	</tr>
+    	</thead>
+    	<tbody>
+    		{% for data in datas %}
+    		<tr>
+    			<!-- Type of report  -->
+    			{% if data.report_type == offensiveInsult %}
+    			<td>Propos injurieux</td>
+    			{% elseif data.report_type == unsuitableContent %}
+    			<td>Contenue inapproprié</td>
+    			{% elseif data.report_type == spam %}
+    			<td>Spam</td>
+    			{% else %}
+    			<td>Fausses informations</td>
+    			{% endif %}
+
+    			<!-- Comment or suject ? -->
+    			{% if data.comment_id == "" %}
+				   <td>Sujet</td>
+				{% else %}
+				   <td>Commentaire</td>
+				{% endif %}
+    			<td>{{ data.creation_date }}</td>
+
+    			<!-- Display the number of report -->
+    			{% if data.comment_id == "" %}
+				   <td>{{ nmbOccTopic[data.topic_id] }}</td>
+				{% else %}
+				   <td>{{ nmbOccComment[data.comment_id] }}</td>
+				{% endif %}
+
+    			<!-- View button -->
+    			{% if data.comment_id == "" and  data.topic_type == "game"%}
+				   <td><button class="displayButton" 
+				   	value='{"type":"game_forum", "id":"{{ data.topic_id }}"}'>Voir</button></td>
+				{% elseif data.comment_id != "" and  data.topic_type == "game"%}
+				   <td><button class="displayButton" 
+				   	value='{"type":"game_comment", "id":"{{ data.comment_id }}", "foreign":"game_forum"}'>Voir</button></td>
+				{% endif %}
+    		</tr>
+    		{% endfor %}
+    	</tbody>
+    </table>
+
+{% endblock %}

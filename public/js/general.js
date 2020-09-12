@@ -80,6 +80,11 @@ class General {
 					$("body").append('<script src="./js/displayTopic.js?'+version+'"></script>');
 					let displayTopic = new DisplayTopic();
 				break;
+
+				case "displayForumGesture":
+					$("body").append('<script src="./js/reportGesture.js?'+version+'"></script>');
+					let reportGesture = new ReportGesture();
+				break;
 			}		
 		});
 	}

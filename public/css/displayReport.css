@@ -1,0 +1,26 @@
+#displayModifTopic, #displayNewComment, #verifSuppr, #verifReport, #verifCommentReport {
+	display: none;
+	width: 25%;
+	background: white;
+	height: 25%;
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	z-index: 2;
+	border: black 3px solid;
+	padding: 10px;
+}
+
+#background {
+	height: 100%;
+	width: 100%;
+	top: 0%;
+	left: 0%;
+	z-index: 1;
+	position: absolute;
+	background: rgb(112,112,112);
+	background: linear-gradient(90deg, rgba(112,112,112,0.5) 0%, rgba(112,112,112,0.5) 100%);
+	display: none;
+}

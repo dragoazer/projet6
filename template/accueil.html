@@ -23,11 +23,13 @@
                         <a class="nav-link" href="index.php?action=registration">Inscription</a>
                     </li>
                     {% if session != "" and session.user_type == "admin" %}
-                      <li class="nav-item">
-                            <p>Vous êtes connecté en tant que {{ session.pseudo }}</p>
-                            <a href="">Gestion de forum</a>
-                            <a href="">Gestion de compte</a>
-                            <a class="nav-link" href="index.php?action=signOut">Déconnexion</a>
+                        <li class="nav-item">
+                            <ul>
+                                <li><p>Vous êtes connecté en tant que {{ session.pseudo }}</p></li>
+                                <li><a href="index.php?action=displayForumGesture">Gestion de forum</a></li>
+                                <li><a href="index.php?action=displayAccountGesture">Gestion de compte</a></li>
+                                <li><a class="nav-link" href="index.php?action=signOut">Déconnexion</a></li>
+                            </ul>
                         </li>
                     {% elseif session != "" %}
                         <li class="nav-item">

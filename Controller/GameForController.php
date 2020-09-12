@@ -15,10 +15,7 @@
 		public function __construct ()
 		{
 			$loader = new \Twig\Loader\FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/projet6/template');
-			$this->twig = new \Twig\Environment($loader, [
-    			'debug' => true,
-			]);
-			$this->twig->addExtension(new \Twig\Extension\DebugExtension());
+			$this->twig = new \Twig\Environment($loader);
 			$this->gameForModel = new GameForModel();
 		}
 

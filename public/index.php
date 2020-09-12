@@ -82,6 +82,14 @@
             case 'reportGammeComment':
                 $reportController->reportGameComment();
                 break;
+                
+            case 'displayForumGesture':
+                $reportController->displayForumGesture();
+                break;
+
+            case 'displayReportDetails':
+                $reportController->displayReportDetails();
+                break;
 
 ///////////////// MUSIC ///////////////////
 /////////// ACCOUNT GESTURE ////////////////
