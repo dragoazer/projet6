@@ -79,7 +79,7 @@
 
 		public function modifyTopic ()
 		{
-			if ($_SESSION["connected"]["user_type"] == "admin") {
+			if (isset($_SESSION['connected']) AND $_SESSION["connected"]["user_type"] == "admin" OR $_POST['access'] === $_REQUEST["access"]) {
 				$data = [
 					"id" => $_POST['id'],
 					"content" => $_POST['content'],
@@ -98,19 +98,13 @@
 
 		public function supprGameTopic ()
 		{
-			if ($_SESSION['connected']["user_type"] === "admin") {
+			if (isset($_SESSION['connected']) AND $_SESSION['connected']["user_type"] === "admin" OR $_POST["access"] === $_REQUEST["access"]) {
+				///////////////////////////////  Topic
 				$data = [
 					"id" => $_POST["id"],
 				];
 				$suprr = new GameForum($data);
 				$supprTopic = $this->gameForModel->supprGameTopic($suprr);
-				/////////////////////////////////// Comment Entity Model ->
-				$data = [
-					"forumId" => $_POST["id"],
-				];
-				$gameCommentModel = new GameCommentModel();
-				$suprr = new GameComment($data);
-				$supprTopic = $gameCommentModel->supprGameCom($suprr);
 			} else {
 				echo "error";
 			}

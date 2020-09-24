@@ -56,9 +56,18 @@
 
 		public function supprGameCom (GameComment $gameComment)
 		{
-			$exec = $this->req->prepare("DELETE FROM game_comment WHERE forumId = :forumId");
+			$exec = $this->req->prepare("DELETE FROM game_comment WHERE id = :id");
 			$exec->execute(array(
-				"forumId" => $gameComment->forumId()
+				"id" => $gameComment->id()
+			));
+		}
+
+		public function modGameCom (GameComment $gameComment)
+		{
+			$exec = $this->req->prepare("UPDATE game_comment SET comment = :comment WHERE id = :id");
+			$exec->execute(array(
+				"id" => $gameComment->id(),
+				"comment" => $gameComment->comment()
 			));
 		}
 	}

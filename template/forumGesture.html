@@ -71,11 +71,13 @@
 
     			<!-- View button -->
     			{% if data.comment_id == "" and  data.topic_type == "game"%}
-				   <td><button class="displayButton" 
-				   	value='{"type":"game_forum", "id":"{{ data.topic_id }}"}'>Voir</button></td>
+				   <td>
+				   		<button class="displayButton" data-archive="{{ data.id }}" value='{"type":"game_forum", "id":"{{ data.topic_id }}"}'>Voir</button>
+				   </td>
 				{% elseif data.comment_id != "" and  data.topic_type == "game"%}
-				   <td><button class="displayButton" 
-				   	value='{"type":"game_comment", "id":"{{ data.comment_id }}", "foreign":"game_forum"}'>Voir</button></td>
+				   <td>
+				   		<button class="displayButton" data-archive="{{ data.id }}" value='{"type":"game_comment", "id":"{{ data.comment_id }}", "foreign":"game_forum"}'>Voir</button>
+				   </td>
 				{% endif %}
     		</tr>
     		{% endfor %}

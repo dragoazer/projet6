@@ -1,16 +1,23 @@
-#displayModifTopic, #displayNewComment, #verifSuppr, #verifReport, #verifCommentReport {
-	display: none;
-	width: 25%;
+#commentDisplayDetails, #topicDisplayDetails {
 	background: white;
-	height: 25%;
-	display: none;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
 	z-index: 2;
 	border: black 3px solid;
 	padding: 10px;
+	margin: 10px;
+}
+
+#topicDisplayDetails {
+	display: none;
+}
+
+#displayDetails {
+	z-index: 2;
+	width: auto;
+	height: auto;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	position: absolute;
 }
 
 #background {
@@ -22,5 +29,8 @@
 	position: absolute;
 	background: rgb(112,112,112);
 	background: linear-gradient(90deg, rgba(112,112,112,0.5) 0%, rgba(112,112,112,0.5) 100%);
-	display: none;
+}
+
+#true, #false {
+	margin-right: 5px;
 }

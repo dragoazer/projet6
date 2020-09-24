@@ -48,8 +48,24 @@
 
 		public function supprGameComment ()
 		{
-			if ($_SESSION['connected']["user_type"] == "admin") {
+			if (isset($_SESSION['connected']["user_type"]) AND $_SESSION['connected']["user_type"] == "admin" OR $_POST['access'] === $_REQUEST["access"]) {
+				$data = [
+					"id" => $_POST["id"]
+				];
+				$comId = new GameComment($data);
+				$supprCom = $this->gameCommentModel->supprGameCom($comId);
+			}
+		}
 
+		public function modifyGameComment ()
+		{
+			if (isset($_SESSION['connected']["user_type"]) AND $_SESSION['connected']["user_type"] == "admin" OR $_POST['access'] === $_REQUEST["access"]) {
+				$data = [
+					"id" => $_POST["id"],
+					"comment" => $_POST["comment"]
+				];
+				$modCom = new GameComment($data);
+				$supprCom = $this->gameCommentModel->modGameCom($modCom);
 			}
 		}
 

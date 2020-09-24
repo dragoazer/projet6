@@ -74,6 +74,10 @@
                 $gameComController->maxPageComment();
                 break;
 
+            case 'modifyGameComment':
+                $gameComController->modifyGameComment();
+                break;
+
 ////////////// REPORT ///////////////
             case 'reportGameTopic':
                 $reportController->reportGameTopic();
@@ -89,6 +93,18 @@
 
             case 'displayReportDetails':
                 $reportController->displayReportDetails();
+                break;
+
+            case "deleteItem":
+                $reportController->deleteItem();
+                break;
+
+            case 'modifyItem':
+                $reportController->modifyItem();
+                break;
+
+            case 'archiveReport':
+                $reportController->archiveReport();
                 break;
 
 ///////////////// MUSIC ///////////////////

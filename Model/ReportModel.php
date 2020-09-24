@@ -47,8 +47,7 @@
 			$exec->bindValue(':begining', $begin, \PDO::PARAM_INT);
 			$exec->execute();
 			if ($exec->rowCount() > 0) {
-				while ($data = $exec->fetch(\PDO::FETCH_ASSOC))
-	    		{
+				while ($data = $exec->fetch(\PDO::FETCH_ASSOC)) {
 	      			$datas[] = new ReportGesture($data);
 	      		}
 				return $datas ?? "error";
@@ -73,9 +72,20 @@
 			$exec->execute();
 			if ($exec->rowCount() > 0) {
 				$data = $exec->fetch(\PDO::FETCH_ASSOC);
-				return $data ?? "error";
+				$datas = array (
+					"tableData" => $data,
+					"table" => $table
+				);
+				return $datas ?? "error";
 			} else {
 				return 'error';
 			}
+		}
+
+		public function archiveReport (ReportGesture $reportGesture)
+		{
+			$exec = $this->req->prepare("DELETE FROM report_gesture WHERE :id");
+			$exec->bindValue(':id', $reportGesture->id(), \PDO::PARAM_INT);
+			$exec->execute();
 		}
 	}
