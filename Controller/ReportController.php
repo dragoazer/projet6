@@ -45,45 +45,91 @@
 
 		public function displayForumGesture ()
 		{
-			if ($_SESSION['connected']["user_type"] == "admin") {
-				$datas =  $this->reportModel->ShowReportData(0,intval(8446744073709551615));
-				
-				//////// count number of occurence
-				$array = (array) $datas;
-				foreach ($array as $key => $value) {
-					if ($value->comment_id() == "") {
-						$arr[] = $value->topic_id();
+			if (isset($_SESSION['connected']) AND $_SESSION['connected']["user_type"] == "admin") {
+				$datas =  $this->reportModel->ShowReportData(0,10);
+				if ($datas != "error") {
+					$countPage = $this->reportModel->nmbPage();
+					$nmbData = ceil($countPage["COUNT(*)"]/10);
+					var_dump($nmbData);
+					//////// count number of occurence
+					$array = (array) $datas;
+					foreach ($array as $key => $value) {
+						if ($value->comment_id() == "") {
+							$arr[] = $value->topic_id();
+						}
 					}
-				}
-				foreach ($array as $key => $value) {
-					if ($value->comment_id() != "") {
-						$arrCom[] = $value->comment_id();
+					foreach ($array as $key => $value) {
+						if ($value->comment_id() != "") {
+							$arrCom[] = $value->comment_id();
+						}
 					}
+
+					$nmbOccTopic = isset($arr) ? array_count_values($arr) : "null";
+					$nmbOccComment = isset($arrCom) ? array_count_values($arrCom) : "null";
+					//////////////////
+
+					$template = $this->twig->load('forumGesture.html');
+					echo $template->render([
+						'title' => 'Gestion de forum.',
+						'css' => '/projet6/public/css/displayReport.css?'.time(),
+						'datas' => $datas,
+						'nmbOccTopic' => $nmbOccTopic,
+						"nmbOccComment" => $nmbOccComment,
+						"nmbData" => $nmbData
+					]);
+				} else {
+					$template = $this->twig->load('forumGesture.html');
+					echo $template->render([
+						'title' => 'Gestion de forum.',
+						'css' => '/projet6/public/css/displayReport.css?'.time(),
+						'data' => 'error'
+					]);
 				}
-
-				$nmbOccTopic = array_count_values($arr);
-				$nmbOccComment = array_count_values($arrCom);
-				//////////////////
-
-				$template = $this->twig->load('forumGesture.html');
-				echo $template->render([
-					'title' => 'Gestion de forum.',
-					'css' => '/projet6/public/css/displayReport.css?'.time(),
-					'datas' => $datas,
-					'nmbOccTopic' => $nmbOccTopic,
-					"nmbOccComment" => $nmbOccComment
-				]);
 			}
 		}
 
-		public function maxPage ()
+		public function maxPageReport ()
 		{
-
+			if (isset($_SESSION['connected']) AND $_SESSION['connected']["user_type"] == "admin") {
+				$topicDetails = $this->reportModel->maxPageReport(
+					$_POST["typeTopic"],
+					$_POST["topicCom"],
+					$_POST["orderBy"], 
+					(int) $_POST["min"],
+					(int) $_POST["max"]
+				);
+				if ($topicDetails != 'error') {
+					$array = (array) $topicDetails;
+					foreach ($array as $key => $value) {
+						if ($value->comment_id() == null) {
+							$arr[] = $value->topic_id();
+						}
+					}
+					foreach ($array as $key => $value) {
+						if ($value->comment_id() != "") {
+							$arrCom[] = $value->comment_id();
+						}
+					}
+					$nmbOccTopic = isset($arr) ? array_count_values($arr) : "null";
+					$nmbOccComment = isset($arrCom) ? array_count_values($arrCom) : "null";
+				
+					$nmbData = count($topicDetails);
+					$datas = array(
+						'topicDetails' => $topicDetails,
+						'nmbData' => $nmbData,
+						"nmbOccTopic" => $nmbOccTopic,
+						"nmbOccComment" => $nmbOccComment
+					);
+					echo json_encode($datas);
+				} else {
+					echo 'error';
+				}
+			}
 		}
 
 		public function displayReportDetails ()
 		{
-			if ($_SESSION['connected']["user_type"] == "admin") {
+			if (isset($_SESSION['connected']) AND $_SESSION['connected']["user_type"] == "admin") {
 				$data = json_decode($_POST["press"], true);
 				$details = $this->reportModel->displayReportDetails($data["type"], $data["id"]);
 				// Si on envoi le POST foreign la fonction considère alors que l'on demande un commentaire et son topic associé.
@@ -183,7 +229,7 @@
 
 		public function archiveReport ()
 		{
-			if ($_SESSION['connected']["user_type"] == "admin") {
+			if (isset($_SESSION['connected']) AND $_SESSION['connected']["user_type"] == "admin") {
 				$data = [
 					"id" => $_POST["id"]
 				];

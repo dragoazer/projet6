@@ -1,7 +1,10 @@
 class ReportGesture {
 	constructor () {
-		this.displayReport();
 		this.general = new General;
+		this.displayReport();
+		this.modifyTable();
+		this.pageGesture();
+		this.pageNumber = 1;
 	}
 
 	displayReport () 
@@ -11,14 +14,117 @@ class ReportGesture {
 			for (let i = 0; i <= nmbButton; i++) {
 				$(".displayButton").eq(i).on("click", (e)=> {
 					let press = $(".displayButton").eq(i).val();
-					this.ArchiveId = $(".displayButton").eq(i).attr("data-archive");
-					this.displayReportDetails(press);
+					let archiveId = $(".displayButton").eq(i).attr("data-archive");
+					this.displayReportDetails(press, archiveId);
 				});
 			}
 		});
 	}
 
-	displayReportDetails (press)
+	pageGesture()
+	{
+		$(document).ready((e)=>{
+			var nmbButton = $(".page").length;
+			for (let i = 0; i <= nmbButton; i++) {
+					$(".page").eq(i).on("click", (e)=> {
+						this.pageNumber = $(".page").eq(i).val();
+						let typeTopic = $("#typeTopic").val();
+						let topicCom = $("#typeTopicCom").val();
+						let numberDisplay = $("#numberDisplay").val();
+						let orderBy = $("#orderBy").val();
+						this.maxPage(typeTopic,topicCom,numberDisplay,orderBy,this.pageNumber);
+					});
+				}
+		});
+	}
+
+	modifyTable ()
+	{
+		$( document ).ready((e)=> {
+			$('#typeTopic,#typeTopicCom,#numberDisplay,#orderBy').on("change", (e)=>{
+				let typeTopic = $("#typeTopic").val();
+				let topicCom = $("#typeTopicCom").val();
+				let numberDisplay = $("#numberDisplay").val();
+				let orderBy = $("#orderBy").val();
+				console.log(typeTopic,topicCom,numberDisplay,orderBy,this.pageNumber);
+				this.maxPage(typeTopic,topicCom,numberDisplay,orderBy,this.pageNumber);
+			});
+		});
+	}
+
+	maxPage (typeTopic, topicCom, numberDisplay, orderBy, page)
+	{
+		let max = numberDisplay;
+		let min = page * numberDisplay-numberDisplay;
+		console.log(max,min);
+		$.ajax({
+			url:'index.php?action=maxPageReport',
+			type: "POST",
+			context: this,
+			data: {
+				typeTopic: typeTopic,
+				topicCom: topicCom,
+				orderBy: orderBy,
+				min: min,
+				max: max
+			},
+			complete: function(response)
+			{
+				let text = response.responseText;
+				if (text != 'error') {
+					$("#refreshGesture").empty();
+					var data = JSON.parse(text);
+					console.log(data);
+					for (var i = 0; i < data.topicDetails.length; i++) {
+						if (data.report_type == "offensiveInsult") {
+			    			var reportType = "Propos injurieux";
+			    		} else if (data.topicDetails[i].report_type == "unsuitableContent") {
+			    			var reportType = "Contenue inapproprié";
+			    		} else if (data.topicDetails[i].report_type == "spam") {
+			    			var reportType = "Spam";
+			    		} else {
+			    			var reportType = "Fausses informations";
+		    			}
+
+		    			if (data.topicDetails[i].comment_id == null) {
+						    var typeOfContent = "Sujet";
+		    			} else {
+							var typeOfContent = "Commentaire";
+		    			}
+
+		    			if (data.topicDetails[i].comment_id == null) {
+							var nmbOcc = data.nmbOccTopic[data.topicDetails[i].topic_id];
+		    			}
+						else {
+						    var nmbOcc = data.nmbOccComment[data.topicDetails[i].comment_id];
+						}
+
+						if (data.topicDetails[i].comment_id == "" &&  data.topicDetails[i].topic_type == "game") {
+						  var buttonDetails = `<td><button class="displayButton" data-archive="${data.topicDetails[i].id}" value='{"type":"game_forum", "id":"${data.topicDetails[i].topic_id}"}'>Voir</button></td>`;
+						} else if (data.topicDetails[i].comment_id != "" &&  data.topicDetails[i].topic_type == "game") {
+						   var buttonDetails = `<td><button class="displayButton" data-archive="${data.topicDetails[i].id}" value='{"type":"game_comment", "id":"${data.topicDetails[i].comment_id}", "foreign":"game_forum"}'>Voir</button></td>`;
+						}
+						$("#refreshGesture").append(
+							"<tr>"+
+		    					"<td>"+reportType+"</td>"+
+		    					"<td>"+typeOfContent+"</td>"+
+			    				"<td>"+data.topicDetails[i].creation_date+"</td>"+
+			    				"<td>"+nmbOcc+"</td>"+
+			    				buttonDetails+
+		    				"</tr>"
+						);
+					}
+					this.displayReport();
+				} else {
+					$("#refreshGesture").empty();
+					$("#refreshGesture").append("Aucune données.");
+					return 'error';
+				}
+			}
+		});
+	}
+
+	displayReportDetails (press, archiveId)
 	{
 		$.ajax({
 			url: 'index.php?action=displayReportDetails',
@@ -33,7 +139,6 @@ class ReportGesture {
 				if (text != "error") {
 					this.data = JSON.parse(text);
 					$("body").append("<div id='background'></div>");
-					console.log(this.data);
 					if (this.data["comment"] != undefined) {
 						//////////////////// Si on à un commentaire on propose d'afficher le sujet associé.
 						$("body").append(
@@ -72,7 +177,7 @@ class ReportGesture {
 								$("#topicShowDetails").remove();
 							});
 
-							this.buttonGesture();
+							this.buttonGesture(archiveId);
 					} else {
 						///////////////////// Sinon on affiche juste le sujet.
 						$("body").append(
@@ -88,7 +193,7 @@ class ReportGesture {
 								"</div>"+
 							"</div>"
 						);
-						this.buttonGesture();
+						this.buttonGesture(archiveId);
 					}
 					this.backgroundGesture();				
 				}
@@ -107,20 +212,20 @@ class ReportGesture {
 		});
 	}
 
-	buttonGesture ()
+	buttonGesture (archiveId)
 	{
 		/////////////////// Supression du signalement
 		$("#archive").on("click", (e)=>{
-			console.log(this.archiveId);
+			console.log(archiveId);
 			$.ajax ({
 				url: 'index.php?action=archiveReport',
 				type: 'POST',
 				context: this,
 				data: {
-					id: this.archiveId
+					id: archiveId
 				},
 				complete : function () {
-					location.reload();
+					this.modifyTable();
 				}
 			});
 		});
@@ -154,6 +259,7 @@ class ReportGesture {
 							content: content
 						},
 						complete : function () {
+							this.modifyTable();
 							$("#background").click();
 						}
 					});
@@ -188,6 +294,7 @@ class ReportGesture {
 								id: this.data['comment']['id']
 							}
 						});
+						this.modifyTable();
 						$("#background").click();
 					} else {
 						$("#background").click();
@@ -225,6 +332,7 @@ class ReportGesture {
 							type: "topic"
 						},
 						complete : function () {
+							this.modifyTable();
 							$("#background").click();
 						}
 					});	
@@ -260,6 +368,7 @@ class ReportGesture {
 								type: "topic"
 							},
 						});
+						this.modifyTable();
 						$("#background").click()
 					} else {
 						$("#background").click();

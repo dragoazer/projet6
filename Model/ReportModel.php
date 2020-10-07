@@ -84,8 +84,113 @@
 
 		public function archiveReport (ReportGesture $reportGesture)
 		{
-			$exec = $this->req->prepare("DELETE FROM report_gesture WHERE :id");
-			$exec->bindValue(':id', $reportGesture->id(), \PDO::PARAM_INT);
+			$exec = $this->req->prepare("DELETE FROM report_gesture WHERE id = :id");
+			$exec->execute(array(
+				'id' =>$reportGesture->id()
+			));
+		}
+
+		public function maxPageReport ($typeTopic, $topicCom, $orderBy, $min, $max)
+		{
+			//$max = $max-1;
+			if ($topicCom == "com") {
+				$comOrTopic = "comment_id IS NOT NULL";
+			} elseif ($topicCom == "topic") {
+				$comOrTopic = "comment_id IS NULL";
+			} else {
+				$comOrTopic = "";
+			}
+			///////////////////////////////////////////////////////////////////////////////
+			if ($typeTopic != 'none' AND $typeTopic === "game" OR $typeTopic === "music" OR $typeTopic === "manga") {
+				$condition = $comOrTopic != "" ? " AND ".$comOrTopic : '';
+				if ($orderBy === "nmbReport") {
+					$exec = $this->req->prepare(
+						"SELECT * FROM report_gesture
+						 WHERE topic_type = '$typeTopic' $condition
+						 ORDER BY count(topic_id)
+						 DESC LIMIT :min, :max" 
+					);
+				} else {
+					$exec = $this->req->prepare(
+						"SELECT * FROM report_gesture
+						 WHERE topic_type = '$typeTopic' $condition
+						 ORDER BY creation_date
+						 DESC LIMIT :min, :max"	
+					);
+				}
+				$noError = true;
+			/////////////////////////////////////////////////////////////////////////////////////
+			} else if ($typeTopic === 'none') { 
+				if ($comOrTopic != "" AND $topicCom == "com") {
+					/////////
+					$condition = 
+					"SELECT x.* FROM report_gesture x
+				    JOIN (SELECT comment_id, COUNT(*) total FROM report_gesture  WHERE $comOrTopic GROUP BY comment_id) y 
+					ON y.comment_id = x.comment_id 
+					ORDER BY total DESC ,id LIMIT :min, :max"; 
+					;
+					/////////	
+				} else if ($comOrTopic != "" AND $topicCom == "topic") {
+					///////
+					$condition = 
+					"SELECT x.* FROM report_gesture x 
+				    JOIN (SELECT topic_id, COUNT(*) total FROM report_gesture WHERE $comOrTopic GROUP BY topic_id) y 
+					ON y.topic_id = x.topic_id 
+					ORDER BY total DESC ,id LIMIT :min, :max";
+					///////
+				} else {
+					///////
+					$condition = 
+					"SELECT x.* FROM report_gesture x 
+				    JOIN (SELECT topic_id, COUNT(*) total FROM report_gesture GROUP BY topic_id) y 
+					ON y.topic_id = x.topic_id 
+					ORDER BY total DESC ,id LIMIT :min, :max";
+					///////
+				}
+				////////////////////////////////////////
+				$whereCondition = $comOrTopic != "" ? " WHERE ".$comOrTopic : '';
+				if ($orderBy === "nmbReport") {
+					$exec = $this->req->prepare(
+						"$condition"
+					);
+				} else {
+					$exec = $this->req->prepare(
+						"SELECT * FROM report_gesture
+						 $whereCondition
+						 ORDER BY creation_date 
+						 DESC LIMIT :min, :max"
+					);
+				}
+				$noError = TRUE;
+			}
+			////////////////////////////////////////////////////////////////////////////////////
+			if (isset($noError)) {
+				$exec->bindValue(':max', $max, \PDO::PARAM_INT);
+				$exec->bindValue(':min', $min, \PDO::PARAM_INT);
+				$exec->execute();
+
+				if ($exec->rowCount() > 0) {
+					while ($data = $exec->fetch(\PDO::FETCH_ASSOC)) {
+		      			$datas[] = new ReportGesture($data);
+		      		}
+					return $datas ?? 'error';
+				} else {
+					return 'error';
+				}
+			} else {
+				return 'error';
+			}	
+		}
+
+		public function nmbPage ()
+		{
+			$exec = $this->req->prepare("SELECT COUNT(*) FROM report_gesture");
 			$exec->execute();
+			if ($exec->rowCount() > 0) {
+				$data = $exec->fetch(\PDO::FETCH_ASSOC);	
+				return $data;
+			} else {
+				return 'error';
+			}
 		}
 	}

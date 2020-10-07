@@ -107,6 +107,9 @@
                 $reportController->archiveReport();
                 break;
 
+            case 'maxPageReport':
+                $reportController->maxPageReport();
+                break;
 ///////////////// MUSIC ///////////////////
 /////////// ACCOUNT GESTURE ////////////////
         	case 'registration':

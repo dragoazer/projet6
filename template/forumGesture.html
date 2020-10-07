@@ -1,5 +1,6 @@
 {% extends "template.html" %}
 {% block content %}
+{% if data != "error" %}
 	<form>
 		<label for="typeTopic">Type de forum</label>
 		<select name="typeTopic" id="typeTopic">
@@ -29,6 +30,16 @@
 			<option value="nmbReport">Nombre de signalement</option>
 		</select>
 	</form>
+	 <div id="showPage">
+    	<p>Page</p>
+    	{% if nmbData > 1 %}
+		    {% for i in 1..nmbData %}
+		    	{% if i >= 1 %}
+		    		<button class="page" value="{{ i }}">{{ i }}</button>
+		    	{% endif %}
+		    {% endfor %}
+	    {% endif %}
+    </div>
 
     <table>
     	<thead>
@@ -40,47 +51,51 @@
             	<th>Action</th>
         	</tr>
     	</thead>
-    	<tbody>
-    		{% for data in datas %}
-    		<tr>
-    			<!-- Type of report  -->
-    			{% if data.report_type == offensiveInsult %}
-    			<td>Propos injurieux</td>
-    			{% elseif data.report_type == unsuitableContent %}
-    			<td>Contenue inapproprié</td>
-    			{% elseif data.report_type == spam %}
-    			<td>Spam</td>
-    			{% else %}
-    			<td>Fausses informations</td>
-    			{% endif %}
+    	<tbody id="refreshGesture">
+    		
+	    		{% for data in datas %}
+	    		<tr>
+	    			<!-- Type of report  -->
+	    			{% if data.report_type == offensiveInsult %}
+	    			<td>Propos injurieux</td>
+	    			{% elseif data.report_type == unsuitableContent %}
+	    			<td>Contenue inapproprié</td>
+	    			{% elseif data.report_type == spam %}
+	    			<td>Spam</td>
+	    			{% else %}
+	    			<td>Fausses informations</td>
+	    			{% endif %}
 
-    			<!-- Comment or suject ? -->
-    			{% if data.comment_id == "" %}
-				   <td>Sujet</td>
-				{% else %}
-				   <td>Commentaire</td>
-				{% endif %}
-    			<td>{{ data.creation_date }}</td>
+	    			<!-- Comment or suject ? -->
+	    			{% if data.comment_id == "" %}
+					   <td>Sujet</td>
+					{% else %}
+					   <td>Commentaire</td>
+					{% endif %}
+	    			<td>{{ data.creation_date }}</td>
 
-    			<!-- Display the number of report -->
-    			{% if data.comment_id == "" %}
-				   <td>{{ nmbOccTopic[data.topic_id] }}</td>
-				{% else %}
-				   <td>{{ nmbOccComment[data.comment_id] }}</td>
-				{% endif %}
+	    			<!-- Display the number of report -->
+	    			{% if data.comment_id == "" %}
+					   <td>{{ nmbOccTopic[data.topic_id] }}</td>
+					{% else %}
+					   <td>{{ nmbOccComment[data.comment_id] }}</td>
+					{% endif %}
 
-    			<!-- View button -->
-    			{% if data.comment_id == "" and  data.topic_type == "game"%}
-				   <td>
-				   		<button class="displayButton" data-archive="{{ data.id }}" value='{"type":"game_forum", "id":"{{ data.topic_id }}"}'>Voir</button>
-				   </td>
-				{% elseif data.comment_id != "" and  data.topic_type == "game"%}
-				   <td>
-				   		<button class="displayButton" data-archive="{{ data.id }}" value='{"type":"game_comment", "id":"{{ data.comment_id }}", "foreign":"game_forum"}'>Voir</button>
-				   </td>
-				{% endif %}
-    		</tr>
-    		{% endfor %}
+	    			<!-- View button -->
+	    			{% if data.comment_id == "" and  data.topic_type == "game"%}
+					   <td>
+					   		<button class="displayButton" data-archive="{{ data.id }}" value='{"type":"game_forum", "id":"{{ data.topic_id }}"}'>Voir</button>
+					   </td>
+					{% elseif data.comment_id != "" and  data.topic_type == "game"%}
+					   <td>
+					   		<button class="displayButton" data-archive="{{ data.id }}" value='{"type":"game_comment", "id":"{{ data.comment_id }}", "foreign":"game_forum"}'>Voir</button>
+					   </td>
+					{% endif %}
+	    		</tr>
+	    		{% endfor %}
+	    	{% else %}
+	    		<p>Il n'y a actuellement aucune données dans le centre de gestion des signalements, il est donc fermé.</p>
+	    	{% endif %}
     	</tbody>
     </table>
 
