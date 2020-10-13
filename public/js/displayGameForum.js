@@ -55,9 +55,8 @@ class DisplayGameForum {
 
 			complete: function(response)
 			{	
-				let data = response.responseText;
-				let maxPage = data/topicPerPage;
-				maxPage = Math.ceil(maxPage);
+				let maxPage = response.responseText;
+				console.log(maxPage);
 				if (maxPage > 1){
 					for (var i = 1; i <= maxPage; i++) {
 						$(".page").append("<button class='pageButton' id='"+i+"'>"+i+"</button>");

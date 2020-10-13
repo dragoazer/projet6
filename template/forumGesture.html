@@ -30,18 +30,19 @@
 			<option value="nmbReport">Nombre de signalement</option>
 		</select>
 	</form>
-	 <div id="showPage">
-    	<p>Page</p>
-    	{% if nmbData > 1 %}
+
+    {% if nmbData > 1 %}
+    	<div id="showPage">
+    		<p>Page</p>
 		    {% for i in 1..nmbData %}
 		    	{% if i >= 1 %}
 		    		<button class="page" value="{{ i }}">{{ i }}</button>
 		    	{% endif %}
 		    {% endfor %}
-	    {% endif %}
-    </div>
+		</div>
+	{% endif %}
 
-    <table>
+    <table id="table">
     	<thead>
 	        <tr>
 	            <th>Type de signalement</th>	        
@@ -52,7 +53,6 @@
         	</tr>
     	</thead>
     	<tbody id="refreshGesture">
-    		
 	    		{% for data in datas %}
 	    		<tr>
 	    			<!-- Type of report  -->
@@ -75,11 +75,7 @@
 	    			<td>{{ data.creation_date }}</td>
 
 	    			<!-- Display the number of report -->
-	    			{% if data.comment_id == "" %}
-					   <td>{{ nmbOccTopic[data.topic_id] }}</td>
-					{% else %}
-					   <td>{{ nmbOccComment[data.comment_id] }}</td>
-					{% endif %}
+					   <td id="nmbOcc">{{ data.total }}</td>
 
 	    			<!-- View button -->
 	    			{% if data.comment_id == "" and  data.topic_type == "game"%}

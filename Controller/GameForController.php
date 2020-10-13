@@ -79,7 +79,9 @@
 
 		public function modifyTopic ()
 		{
+			var_dump('entrée du controlleur');
 			if (isset($_SESSION['connected']) AND $_SESSION["connected"]["user_type"] == "admin" OR $_POST['access'] === $_REQUEST["access"]) {
+				var_dump('ok ca work');
 				$data = [
 					"id" => $_POST['id'],
 					"content" => $_POST['content'],

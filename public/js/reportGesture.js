@@ -14,8 +14,7 @@ class ReportGesture {
 			for (let i = 0; i <= nmbButton; i++) {
 				$(".displayButton").eq(i).on("click", (e)=> {
 					let press = $(".displayButton").eq(i).val();
-					let archiveId = $(".displayButton").eq(i).attr("data-archive");
-					this.displayReportDetails(press, archiveId);
+					this.displayReportDetails(press);
 				});
 			}
 		});
@@ -46,7 +45,6 @@ class ReportGesture {
 				let topicCom = $("#typeTopicCom").val();
 				let numberDisplay = $("#numberDisplay").val();
 				let orderBy = $("#orderBy").val();
-				console.log(typeTopic,topicCom,numberDisplay,orderBy,this.pageNumber);
 				this.maxPage(typeTopic,topicCom,numberDisplay,orderBy,this.pageNumber);
 			});
 		});
@@ -56,7 +54,6 @@ class ReportGesture {
 	{
 		let max = numberDisplay;
 		let min = page * numberDisplay-numberDisplay;
-		console.log(max,min);
 		$.ajax({
 			url:'index.php?action=maxPageReport',
 			type: "POST",
@@ -74,7 +71,6 @@ class ReportGesture {
 				if (text != 'error') {
 					$("#refreshGesture").empty();
 					var data = JSON.parse(text);
-					console.log(data);
 					for (var i = 0; i < data.topicDetails.length; i++) {
 						if (data.report_type == "offensiveInsult") {
 			    			var reportType = "Propos injurieux";
@@ -92,14 +88,9 @@ class ReportGesture {
 							var typeOfContent = "Commentaire";
 		    			}
 
-		    			if (data.topicDetails[i].comment_id == null) {
-							var nmbOcc = data.nmbOccTopic[data.topicDetails[i].topic_id];
-		    			}
-						else {
-						    var nmbOcc = data.nmbOccComment[data.topicDetails[i].comment_id];
-						}
+						var nmbOcc = data.topicDetails[i].total;
 
-						if (data.topicDetails[i].comment_id == "" &&  data.topicDetails[i].topic_type == "game") {
+						if (data.topicDetails[i].comment_id == null &&  data.topicDetails[i].topic_type == "game") {
 						  var buttonDetails = `<td><button class="displayButton" data-archive="${data.topicDetails[i].id}" value='{"type":"game_forum", "id":"${data.topicDetails[i].topic_id}"}'>Voir</button></td>`;
 						} else if (data.topicDetails[i].comment_id != "" &&  data.topicDetails[i].topic_type == "game") {
 						   var buttonDetails = `<td><button class="displayButton" data-archive="${data.topicDetails[i].id}" value='{"type":"game_comment", "id":"${data.topicDetails[i].comment_id}", "foreign":"game_forum"}'>Voir</button></td>`;
@@ -109,11 +100,20 @@ class ReportGesture {
 		    					"<td>"+reportType+"</td>"+
 		    					"<td>"+typeOfContent+"</td>"+
 			    				"<td>"+data.topicDetails[i].creation_date+"</td>"+
-			    				"<td>"+nmbOcc+"</td>"+
+			    				"<td id='nmbOcc'>"+nmbOcc+"</td>"+
 			    				buttonDetails+
 		    				"</tr>"
 						);
 					}
+					if (data.nmbData > 1) {
+						$("#showPage").empty();
+						$("#showPage").append("<p>Page</p>");
+						for (var i = 0; i < data.nmbData; i++) {
+							let x = i+1;
+							$("#showPage").append(`<button class='page' value='${x}'>${x}</button>`);
+						}
+					}
+					this.pageGesture();
 					this.displayReport();
 				} else {
 					$("#refreshGesture").empty();
@@ -124,7 +124,7 @@ class ReportGesture {
 		});
 	}
 
-	displayReportDetails (press, archiveId)
+	displayReportDetails (press)
 	{
 		$.ajax({
 			url: 'index.php?action=displayReportDetails',
@@ -138,6 +138,7 @@ class ReportGesture {
 				let text = response.responseText;
 				if (text != "error") {
 					this.data = JSON.parse(text);
+					console.log(this.data);
 					$("body").append("<div id='background'></div>");
 					if (this.data["comment"] != undefined) {
 						//////////////////// Si on à un commentaire on propose d'afficher le sujet associé.
@@ -154,7 +155,7 @@ class ReportGesture {
 										"<button id='commentModify'>Modifier</button> "+
 										"<button id='commentSuppr'>Supprimer</button> "+
 										"<button id='topicShowDetails'>voir le sujet associé</button> "+
-										"<button id='archive'>Archiver</button>"+
+										"<button id='archive' value='"+this.data["comment"]["id"]+",com'>Archiver</button>"+
 									"</p>"+
 								"</div>"+
 
@@ -167,6 +168,7 @@ class ReportGesture {
 									"<h4>Créateur du topic</h4>"+
 									"<p>"+this.data["topic"]["editor"]+"</p>"+
 									"<p><button id='topicModify'>Modifier</button> <button id='topicSuppr'>Supprimer</button>"+
+									"<button id='archive' value='"+this.data["topic"]["id"]+",topic'>Archiver</button>"+
 								"</div>"+
 							"</div>"
 							);
@@ -177,7 +179,7 @@ class ReportGesture {
 								$("#topicShowDetails").remove();
 							});
 
-							this.buttonGesture(archiveId);
+							this.buttonGesture();
 					} else {
 						///////////////////// Sinon on affiche juste le sujet.
 						$("body").append(
@@ -189,11 +191,11 @@ class ReportGesture {
 									"<p>"+this.data["topic"]["content"]+"</p>"+
 									"<h4>Créateur du topic</h4>"+
 									"<p>"+this.data["topic"]["editor"]+"</p>"+
-									"<p><button id='topicModify' >Modifier</button> <button  id='topicSuppr'>Supprimer</button> <button id='archive'>Archiver</button></p>"+
+									"<p><button id='topicModify'>Modifier</button> <button  id='topicSuppr'>Supprimer</button> <button id='archive' value='"+this.data["topic"]["id"]+",topic'>Archiver</button></p>"+
 								"</div>"+
 							"</div>"
 						);
-						this.buttonGesture(archiveId);
+						this.buttonGesture();
 					}
 					this.backgroundGesture();				
 				}
@@ -212,20 +214,21 @@ class ReportGesture {
 		});
 	}
 
-	buttonGesture (archiveId)
+	buttonGesture ()
 	{
 		/////////////////// Supression du signalement
 		$("#archive").on("click", (e)=>{
-			console.log(archiveId);
+			var val = $("#archive").val().split(",");
 			$.ajax ({
 				url: 'index.php?action=archiveReport',
 				type: 'POST',
 				context: this,
 				data: {
-					id: archiveId
+					id: val[0],
+					comOrTopic: val[1]
 				},
 				complete : function () {
-					this.modifyTable();
+					location.reload();
 				}
 			});
 		});
@@ -256,11 +259,10 @@ class ReportGesture {
 						data: {
 							table: this.data['tableCom'],
 							id: this.data['comment']['id'],
-							content: content
+							content: content,
 						},
 						complete : function () {
-							this.modifyTable();
-							$("#background").click();
+							location.reload();
 						}
 					});
 				}
@@ -290,12 +292,11 @@ class ReportGesture {
 							type: 'POST',
 							context: this,
 							data: {
-								table: this.data['tableCom'],
+								comOrTopic: this.data['tableCom'],
 								id: this.data['comment']['id']
 							}
 						});
-						this.modifyTable();
-						$("#background").click();
+						location.reload();
 					} else {
 						$("#background").click();
 					}
@@ -314,7 +315,6 @@ class ReportGesture {
 			$("#sendNewContent").on("click", (e)=>{
 				e.preventDefault();
 				let content = $("input[name=newContent]").val();
-				console.log(content, "modify suject");
 				$("#errorMsg").remove();
 				$("input[name='newContent']").css("border","solid 0px red");
 				if (this.general.emptyTest(content)) {
@@ -326,14 +326,12 @@ class ReportGesture {
 						type: 'POST',
 						context: this,
 						data: {
-							table: this.data['tableTopic'],
+							table: this.data['table'],
 							id: this.data['topic']['id'],
 							content: content,
-							type: "topic"
 						},
 						complete : function () {
-							this.modifyTable();
-							$("#background").click();
+							location.reload();
 						}
 					});	
 				}
@@ -363,13 +361,11 @@ class ReportGesture {
 							type: 'POST',
 							context: this,
 							data: {
-								table: this.data['tableTopic'],
-								id: this.data['topic']['id'],
-								type: "topic"
+								table: this.data['table'],
+								id: this.data['topic']['id']
 							},
 						});
-						this.modifyTable();
-						$("#background").click()
+						location.reload();
 					} else {
 						$("#background").click();
 					}

@@ -20,6 +20,7 @@ class DisplayTopic {
 			for (var i = 0; i <= $(".reportButton").length-1; i++) {
 				let z = i;
 				$(".reportButton").eq(z).on("click", (e)=>{
+					console.log("coucou");
 					e.preventDefault();
 					let value = $(".reportButton").eq(z).val();
 					$("body").css("overflow", "hidden");
@@ -35,7 +36,8 @@ class DisplayTopic {
 	{
 		$("#sendReportComment").on("click", (e)=>{
 			e.preventDefault();
-			let report_type = $("#reportCommentValue").val();	
+			let report_type = $("#reportCommentValue").val();
+			console.log(report_type);	
 			$.ajax({
 				url: 'index.php?action=reportGammeComment',
 				type: 'POST',
@@ -54,6 +56,7 @@ class DisplayTopic {
 					$("verifReport").append("<p class='error'>Erreur interne.</p>");
 				}
 			});
+			$("#sendReportComment").off("click");
 		});
 	}
 
@@ -90,6 +93,7 @@ class DisplayTopic {
 					$("verifReport").append("<p class='error'>Erreur interne.</p>");
 				}
 			});
+			$("#sendReportComment").off("click");
 		});
 	}
 
@@ -336,11 +340,11 @@ class DisplayTopic {
 		 	complete : function (response)
 		 	{
 		 		let text = response.responseText;
+		 		console.log(text);
 		 		if (text != "error") {
-		 			let maxPage = Math.ceil(text / 10);
 		 			$(".page").empty();
-		 			if (maxPage > 1) {
-			 			for (let i = 1; i <= maxPage; i++) {
+		 			if (text > 1) {
+			 			for (let i = 1; i <= text; i++) {
 			 				$(".page").append("<button id='page"+i+"'>"+i+"</button>");
 			 				$("#page"+i).on("click",(e)=>{
 			 					let min = i*10-10;

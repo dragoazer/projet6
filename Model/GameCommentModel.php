@@ -47,11 +47,11 @@
 
 		public function maxPageComment (GameComment $gameComment)
 		{
-			$exec = $this->req->prepare("SELECT COUNT(*) FROM game_comment WHERE :id");
-			$exec->bindValue(':id', $gameComment->forumId(), \PDO::PARAM_INT);
+			$exec = $this->req->prepare("SELECT COUNT(*) FROM game_comment WHERE forumId = :forumId");
+			$exec->bindValue(':forumId', $gameComment->forumId(), \PDO::PARAM_INT);
 			$exec->execute();
 			$count = $exec->fetch();
-			return $count[0];
+			return ceil($count[0]/10);
 		}
 
 		public function supprGameCom (GameComment $gameComment)

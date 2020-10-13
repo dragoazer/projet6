@@ -46,36 +46,28 @@
 		public function displayForumGesture ()
 		{
 			if (isset($_SESSION['connected']) AND $_SESSION['connected']["user_type"] == "admin") {
-				$datas =  $this->reportModel->ShowReportData(0,10);
+				$datas =  $this->reportModel->maxPageReport(
+					"none",
+					"none",
+					"creation_date",
+					0,
+					10
+				);
 				if ($datas != "error") {
-					$countPage = $this->reportModel->nmbPage();
-					$nmbData = ceil($countPage["COUNT(*)"]/10);
-					var_dump($nmbData);
-					//////// count number of occurence
-					$array = (array) $datas;
-					foreach ($array as $key => $value) {
-						if ($value->comment_id() == "") {
-							$arr[] = $value->topic_id();
-						}
-					}
-					foreach ($array as $key => $value) {
-						if ($value->comment_id() != "") {
-							$arrCom[] = $value->comment_id();
-						}
-					}
-
-					$nmbOccTopic = isset($arr) ? array_count_values($arr) : "null";
-					$nmbOccComment = isset($arrCom) ? array_count_values($arrCom) : "null";
-					//////////////////
-
+					$nmbData = $this->reportModel->nmbPagePrecision(
+						"none",
+						"none",
+						"creation_date",
+						0,
+						10
+					);
+					////////////
 					$template = $this->twig->load('forumGesture.html');
 					echo $template->render([
 						'title' => 'Gestion de forum.',
 						'css' => '/projet6/public/css/displayReport.css?'.time(),
 						'datas' => $datas,
-						'nmbOccTopic' => $nmbOccTopic,
-						"nmbOccComment" => $nmbOccComment,
-						"nmbData" => $nmbData
+						'nmbData' => $nmbData
 					]);
 				} else {
 					$template = $this->twig->load('forumGesture.html');
@@ -99,26 +91,16 @@
 					(int) $_POST["max"]
 				);
 				if ($topicDetails != 'error') {
-					$array = (array) $topicDetails;
-					foreach ($array as $key => $value) {
-						if ($value->comment_id() == null) {
-							$arr[] = $value->topic_id();
-						}
-					}
-					foreach ($array as $key => $value) {
-						if ($value->comment_id() != "") {
-							$arrCom[] = $value->comment_id();
-						}
-					}
-					$nmbOccTopic = isset($arr) ? array_count_values($arr) : "null";
-					$nmbOccComment = isset($arrCom) ? array_count_values($arrCom) : "null";
-				
-					$nmbData = count($topicDetails);
+					$nmbData = $this->reportModel->nmbPagePrecision(
+						$_POST["typeTopic"],
+						$_POST["topicCom"],
+						$_POST["orderBy"], 
+						(int) $_POST["min"],
+						(int) $_POST["max"]
+					);
 					$datas = array(
-						'topicDetails' => $topicDetails,
-						'nmbData' => $nmbData,
-						"nmbOccTopic" => $nmbOccTopic,
-						"nmbOccComment" => $nmbOccComment
+						"topicDetails" => $topicDetails,
+						"nmbData" => $nmbData
 					);
 					echo json_encode($datas);
 				} else {
@@ -183,7 +165,6 @@
 					);
 					curl_setopt_array($ch, $defaults);
 					$result = curl_exec($ch);
-					print_r($result);	
 					curl_close($ch);
 				}
 			}
@@ -192,6 +173,7 @@
 		public function modifyItem ()
 		{
 			if ($_SESSION['connected']["user_type"] == "admin") {
+				var_dump($_POST["table"]);
 				if (isset($_POST["table"])) {
 					switch ($_POST["table"]) {
 						case "game_comment":
@@ -221,20 +203,21 @@
 						);
 						curl_setopt_array($ch, $defaults);
 						$result = curl_exec($ch);
-						print_r($result);
 						curl_close($ch);
+						$this->archiveReport($_POST["id"], $_POST["comOrTopic"]);
 					}	
 				}
 			}
 
-		public function archiveReport ()
+		public function archiveReport ($id = NULL, $comOrTopic = NULL)
 		{
+			if ($id === NULL OR $comOrTopic == NULL) {
+				$id = $_POST["id"];
+				$comOrTopic =  $_POST["comOrTopic"];
+			}
+
 			if (isset($_SESSION['connected']) AND $_SESSION['connected']["user_type"] == "admin") {
-				$data = [
-					"id" => $_POST["id"]
-				];
-				$report = new ReportGesture($data);
-				$reportTopic = $this->reportModel->archiveReport($report);
+				$reportTopic = $this->reportModel->archiveReport($id,$comOrTopic);
 			}
 		}
 	}

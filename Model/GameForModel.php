@@ -57,7 +57,7 @@
 
 		public function displayTopic (GameForum $gameForum)
 		{
-			$exec = $this->req->prepare("SELECT * FROM game_forum WHERE :id");
+			$exec = $this->req->prepare("SELECT * FROM game_forum WHERE id = :id");
 			$exec->execute(array(
 				"id" => $gameForum->id(),
 			));
@@ -70,7 +70,7 @@
 			$exec = $this->req->prepare("SELECT COUNT(*) FROM game_forum");
 			$exec->execute();
 			$maxTopic = $exec->fetch();
-			return $maxTopic[0];
+			return ceil($maxTopic[0]/10);
 		}
 
 		public function supprGameTopic (GameForum $gameForum)
@@ -87,7 +87,7 @@
 			$exec->execute(array(
 				"content" => $gameForum->content(),
 				"id" => $gameForum->id(),
-				"modified" => $gameForum->modified()
+				"modified" => 1
 			));
 		}
 
