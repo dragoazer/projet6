@@ -94,7 +94,7 @@
 
 		public function  maxPageGame ()
 		{
-			$modelTopic = $this->gameForModel->maxPageGame();
+			$modelTopic = $this->gameForModel->maxPageGame($_POST['max']);
 			echo $modelTopic;
 		}
 
@@ -110,5 +110,11 @@
 			} else {
 				echo "error";
 			}
+		}
+
+		public function searchForGame ()
+		{
+			$searchTopic = $this->gameForModel->searchForGame($_POST["search"]);
+			echo json_encode($searchTopic);
 		}
 	}

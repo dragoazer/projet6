@@ -8,12 +8,14 @@
 	use Projet6\Controller\GameForController;
     use Projet6\Controller\GameComController;
     use Projet6\Controller\ReportController;
+    use Projet6\Controller\ChatController;
 
 	$generalController = new GeneralController();
 	$accountController = new AccountController();
 	$gameForController = new GameForController();
     $gameComController = new GameComController();
     $reportController  = new  ReportController();
+    $chatController = new ChatController();
 
 	if (isset($_GET["action"])) {
 	 	switch ($_GET["action"]) {
@@ -55,6 +57,10 @@
 
             case 'maxPageGame':
                 $gameForController->maxPageGame();
+                break;
+
+            case 'searchForGame':
+                $gameForController->searchForGame();
                 break;
 
 ///////// COMMENT GAME
@@ -131,6 +137,15 @@
             case 'signOut':
                 $accountController->signOut();
                 break;
+
+///////////////// CHAT GESTURE /////////////
+            case 'sendChatMessage':
+                $chatController->sendChatMessage();
+                break;
+
+            case 'showChat':
+             $chatController->showChat();
+             break;
 	 	}
 	} else {
     	$generalController->displayHome();

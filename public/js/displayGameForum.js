@@ -1,7 +1,8 @@
 class DisplayGameForum {
 	constructor () {
-		this.ddbCall(false,0,10);
-		this.maxPage(10);
+		this.searchGesture();
+		this.ddbCall(0,10);
+		this.maxPage(10, null, null);
 		this.modifDisplayTopic();
 		this.actualPage = 1;
 	}
@@ -11,19 +12,18 @@ class DisplayGameForum {
 		$("#maxPerPage").on("change", (e)=>{
 			let max = $("#maxPerPage").val();
 			$(".page").empty();
-			this.ddbCall(false,0,max);
-			this.maxPage(max);
+			this.maxPage(max, null, null);
+			this.ddbCall(0,max)
 		});
 
 	}
 
-	ddbCall (search, min, max)
+	ddbCall (min, max)
 	{
 		$.ajax({
 			url: 'index.php?action=searchGameForum',
 			type: 'POST',
 			data: {
-				search: search,
 				min: min,
 				max: max
 			},
@@ -49,24 +49,27 @@ class DisplayGameForum {
 
 	maxPage (topicPerPage)
 	{
-		const that = this;
 		$.ajax({
+			context: this,
 			url: 'index.php?action=maxPageGame',
-
+			type: 'POST',
+			data: {
+				max: topicPerPage,
+			},
 			complete: function(response)
 			{	
 				let maxPage = response.responseText;
-				console.log(maxPage);
 				if (maxPage > 1){
+					$(".page").empty();
 					for (var i = 1; i <= maxPage; i++) {
 						$(".page").append("<button class='pageButton' id='"+i+"'>"+i+"</button>");
 						let z = i;
 						$("#"+i+"").on("click", (e)=>{
 							if (z != this.actualPage) {
+								this.actualPage = z;
 								let min = z * topicPerPage - topicPerPage;
 								let max = z * topicPerPage;
-								that.ddbCall(false,min,max);
-								this.actualPage = z;
+								this.ddbCall(min,max);
 							}
 						});
 					}
@@ -79,5 +82,38 @@ class DisplayGameForum {
 			}
 
 		});
+	}
+
+	searchGesture ()
+	{
+		$("#searchButton").on("click", (e)=>{
+			e.preventDefault();
+			let search = $("input[name=search]").val();
+			
+			$.ajax({
+				context: this,
+				url: 'index.php?action=searchForGame',
+				type: 'POST',
+				data: {
+					search: search,
+				},
+				complete: function(response)
+				{
+					let text = response.responseText;
+					if (text != '"error"') {
+						$(".page").empty();
+						let datas = JSON.parse(text);
+						$("#displayTopic").empty();
+						for (let data of datas) {
+							$("#displayTopic").append("<li>"+data.title+" "+data.editor+" "+data.creation_topic+" <a href='index.php?action=ShowTopicGame&id="+data.id+"'><button>VOIR</button></a></li>")
+						}
+					} else {
+						$(".page").empty();
+						$("#displayTopic").empty();
+						$("#displayTopic").append("<p>Aucune données à afficher.</p>");
+					}
+				}
+			});
+		});	
 	}
 }

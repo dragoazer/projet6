@@ -7,7 +7,7 @@
 	{% endif %}
 	<h1>Liste des topic sur les jeux</h1>
 	<form>
-		<label>Recherche</label>
+		<label><button id="searchButton">Recherche</button></label>
 		<input type="search" name="search">
 		<label>Nombre de sujet affiché par page :</label>
 		<select id ="maxPerPage" name="maxPerPage">
@@ -17,7 +17,7 @@
 		    <option value="75">75</option>
 		</select>
 	</form>
-	<p>page<span class="page"></span></p>
+	<p>Page<span class="page"></span></p>
 	 <ol id="displayTopic">
 	 	
 	 </ol>

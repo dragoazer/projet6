@@ -40,7 +40,7 @@
 
 		public function displayAllTopic (int $begin , int $end)
 		{
-			$exec = $this->req->prepare("SELECT * FROM game_forum ORDER BY creation_date DESC LIMIT :begining, :finish ");
+			$exec = $this->req->prepare("SELECT * FROM game_forum ORDER BY creation_date DESC LIMIT :begining, :finish");
 			$exec->bindValue(':finish', $end, \PDO::PARAM_INT);
 			$exec->bindValue(':begining', $begin, \PDO::PARAM_INT);
 			$exec->execute();
@@ -65,12 +65,12 @@
 			return $datas;
 		}
 
-		public function maxPageGame ()
+		public function maxPageGame ($max)
 		{
 			$exec = $this->req->prepare("SELECT COUNT(*) FROM game_forum");
 			$exec->execute();
 			$maxTopic = $exec->fetch();
-			return ceil($maxTopic[0]/10);
+			return ceil($maxTopic[0]/$max);
 		}
 
 		public function supprGameTopic (GameForum $gameForum)
@@ -91,4 +91,29 @@
 			));
 		}
 
+		public function searchForGame (string $search)
+		{
+			$exec = $this->req->prepare(
+				"SELECT *
+				FROM game_forum 
+				WHERE dev LIKE :search OR 
+				name LIKE :search OR 
+				content LIKE :search OR
+				title LIKE :search OR
+				editor LIKE :search"
+			);
+
+			$exec->bindValue(':search', $search, \PDO::PARAM_STR);
+			$exec->execute();
+
+			if ($exec->rowCount() > 0) {
+				while ($data = $exec->fetch(\PDO::FETCH_ASSOC))
+	    		{
+	      			$datas[] = new GameForum($data);
+	      		}
+				return $datas ?? "error";
+			} else {
+				return 'error';
+			}
+		}
 	}

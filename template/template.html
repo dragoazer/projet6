@@ -8,6 +8,7 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
             <meta name="viewport" content="initial-scale=1, width=device-width">
             <!-- CSS -->
+            <link href="/projet6/public/css/chatCss.css?1" rel="stylesheet"/>
             {% if css is defined %}
                 <link href="{{ css }}" rel="stylesheet"/>
             {% endif %}
@@ -35,7 +36,25 @@
     <body>
         {% block content %}{% endblock %}
         {% block footer %}
+
             <footer>
+                <!-- CHAT -->
+                <div id="chat">
+                    <p id="chatGesture"><button id="reduce">-</button> Réduire</p>
+                    <div id="displayChat">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>            
+                    </div>
+
+                    {% if session != "" %}
+                        <form id="infoChat">
+                            <input id="inputMessage" placeholder="Entré un message" type="text" name="sendMessage">
+                            <button id="sendMessage">Envoyer</button>
+                        </form>
+                    {% elseif session != "" %}
+                        <p id="infoChat">Nouveau message :<a class="nav-link" href="index.php?action=displayLogin">Connexion</a><p>
+                    {% endif %}
+                </div>
+
                 <div class="footerElmt">
                     <p>RS</p>
                 </div>
@@ -62,5 +81,7 @@
     </body>
         <script src="/projet6/public/js/general.js?1.7"></script>
         <script type="text/javascript">let general = new General;</script>
+        <script src="/projet6/public/js/chatGesture.js"></script>
+        <script type="text/javascript">let chat = new ChatGesture;</script>
 </html>
 

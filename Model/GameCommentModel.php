@@ -40,7 +40,7 @@
 			$exec->execute(array(
 				"pseudo" => $gameComment->pseudo(),
 				"comment" => $gameComment->comment(),
-				"post_date" => date("Y-m-d"),
+				"post_date" => date("d-m-Y"),
 				"forumId" => $gameComment->forumId()
 			));
 		}

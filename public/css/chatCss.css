@@ -1,0 +1,23 @@
+#chat {
+	position: fixed;
+	left: 75%;
+	height: 40%;
+	width: 25%;	
+	top: 50%;
+	transform: translate(0,-50%);
+	background-color: grey;
+}
+
+#displayChat {
+	border: solid 3px black;
+	overflow: auto;
+	background-color: grey;
+}
+
+#reduce {
+	left: 10%;
+}
+
+#chatGesture{
+	margin: 5px auto 5px auto;
+}
