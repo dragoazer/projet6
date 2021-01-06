@@ -1,0 +1,46 @@
+
+#showDownloadImage, #pwdForm {
+	border: solid black 3px;
+	position: fixed;
+	transform: translate(-50%,-50%);
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	background: white;
+	display: none;
+}
+
+#actualProfile {
+	width: 100px;
+	height: 100px;
+}
+
+#greyBackground {
+	background: rgba(112,112,112,0.5);
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 1;
+	margin: 0px;
+	padding: 0px;
+}
+
+#changePwd {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.valid {
+	color: green;
+}
+
+.error {
+	color: red;
+}
+
+#preview, img {
+	width: 250px;
+	height: 250px;
+}

@@ -13,7 +13,7 @@ class DisplayGameForum {
 			let max = $("#maxPerPage").val();
 			$(".page").empty();
 			this.maxPage(max, null, null);
-			this.ddbCall(0,max)
+			this.ddbCall(0,max);
 		});
 
 	}

@@ -53,7 +53,7 @@ class Registration {
 	ajaxInscription (email,pseudo,pwd)
 	{
 		$.ajax({
-			url: 'index.php?action=newTopicGame',
+			url: 'index.php?action=setRegistration',
 			type: 'POST',
 			data: {
 				email : email,
@@ -61,14 +61,16 @@ class Registration {
 				pwd: pwd,
 			},
 
-			complete: function(response) 
+			success: function(response) 
 			{		
-				var text = response.responseText;
 				$("#inscription").empty();
-				if (text === "error") {
-					$("#inscription").append("<p class='error'>Ce compte existe déjà, veuillez vous <a href='index.php?action=displayLogin'>connecter.</a>.</p>");
+				if (response === "error") {
+					$("form").append("<p class='error'>Ce compte existe déjà, veuillez vous <a href='index.php?action=displayLogin'>connecter.</a>.</p>");
 				} else {
-					$("#inscription").append("<p class='valid'>Votre inscription a été pris compte, veuillez vous <a href='index.php?action=displayLogin'>connecter.</a></p>");
+					$("form").append("<p class='valid'>Votre inscription a été pris compte, veuillez vous <a href='index.php?action=displayLogin'>connecter.</a></p>");
+					setTimeout(function() {
+						document.location.assign("index.php?action=displayLogin");
+					},3000);
 				}
 			},
 			error: function ()

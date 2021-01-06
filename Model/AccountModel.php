@@ -31,7 +31,7 @@
 					$exec->execute([
 			        	"pseudo"=> $account->pseudo(),
 			        	"user_type"=>"member",
-			        	"profile_picture" => ".\projet6\public\imgprofile_picture.jpg",
+			        	"profile_picture" => "./img/profile/profile_picture.jpg",
 			        	"email"=> $account->email(),
 			        	"pwd"=> password_hash($account->pwd(), PASSWORD_DEFAULT),
 			    	]);
@@ -42,9 +42,23 @@
 			}
 		}
 
+		public function verifyPwd (Account $account)
+		{
+			$exec = $this->req->prepare("SELECT pwd FROM account WHERE email=?");
+			$exec->execute(array(
+				$account->email(),
+			));
+			if ($exec->rowCount() > 0) {
+				$data = $exec->fetch();
+				return $data;
+			} else {
+				return "error";
+			}
+		}
+
 		public function setLogin (Account $account)
 		{
-			$exec = $this->req->prepare("SELECT email, pseudo, user_type FROM account WHERE email=?");
+			$exec = $this->req->prepare("SELECT email, pseudo, user_type, profile_picture FROM account WHERE email=?");
 			$exec->execute(array(
 				$account->email(),
 			));
@@ -55,5 +69,23 @@
 			} else {
 				return "error";
 			}
+		}
+
+		public function modifyImgProfile (Account $account)
+		{
+			$exec = $this->req->prepare("UPDATE account SET profile_picture = :profile_picture WHERE pseudo = :pseudo");
+			$exec->execute(array(
+				'pseudo' => $account->pseudo(),
+				'profile_picture' => $account->profile_picture()
+			));
+		}
+
+		public function modifyPwd ( string $newPwd, string $email)
+		{
+			$exec = $this->req->prepare("UPDATE account SET pwd = :newPwd WHERE email = :email");
+			$exec->execute(array(
+				'newPwd' => password_hash($newPwd, PASSWORD_DEFAULT),
+				'email' => $email
+			));
 		}
 	}

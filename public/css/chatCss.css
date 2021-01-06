@@ -12,6 +12,7 @@
 	border: solid 3px black;
 	overflow: auto;
 	background-color: grey;
+	height: 80%;
 }
 
 #reduce {
@@ -20,4 +21,13 @@
 
 #chatGesture{
 	margin: 5px auto 5px auto;
+}
+
+#radioMusic {
+	position: fixed;
+	top: 10%;
+	left: 10%;
+	height: 20%;
+	width: 40%;
+	background-color: rgb(112,112,112, 0.3); 
 }

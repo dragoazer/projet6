@@ -33,9 +33,11 @@
                         </li>
                     {% elseif session != "" %}
                         <li class="nav-item">
-                            <p>Vous êtes connecté en tant que {{ session.pseudo }}</p>
-                            <a href="">Gestion de compte</a>
-                            <a class="nav-link" href="index.php?action=signOut">Déconnexion</a>
+                            <ul>
+                                <p>Vous êtes connecté en tant que {{ session.pseudo }}</p>
+                                <a href="index.php?action=displayAccountGesture">Gestion de compte</a>
+                                <a class="nav-link" href="index.php?action=signOut">Déconnexion</a>   
+                            </ul>
                         </li>
                     {% endif %}
                 </ul>

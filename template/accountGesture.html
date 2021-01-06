@@ -1,0 +1,21 @@
+ {% extends "template.html" %}
+ {% block content %}
+ 	<div id='greyBackground'></div>
+ 	<form id="showDownloadImage" action="" method="post" enctype="multipart/form-data">
+ 		<p>Nouvelle image de profile</p>
+ 		<input type="file" id="newImage" name="avatar" accept="image/png, image/jpeg">
+   		<button id="sendNewProfile">Envoyer</button>
+ 	</form>
+
+ 	<div>
+ 		<p>Image de profile</p>
+		<image id="actualProfile" src="{{ session.profile_picture }}">
+		<button id="showChangeProfile">Changer</button>
+		<p id="accName">Pseudo : {{ session.pseudo }}</p>
+ 	</div>
+	
+	<div id="pwdGesture">
+		<p id="changePwd">Changer de mot de passe</p>
+	</div>
+
+ {% endblock %}

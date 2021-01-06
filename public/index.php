@@ -138,6 +138,18 @@
                 $accountController->signOut();
                 break;
 
+            case 'displayAccountGesture':
+                $accountController->displayAccountGesture();
+                break;
+
+            case 'changeImageProfile':
+                $accountController->changeImageProfile();
+                break;
+
+            case 'changePwd':
+                $accountController->changePwd();
+                break;
+
 ///////////////// CHAT GESTURE /////////////
             case 'sendChatMessage':
                 $chatController->sendChatMessage();
@@ -146,6 +158,10 @@
             case 'showChat':
              $chatController->showChat();
              break;
+//////////////// MUSIC GESTURE //////////////
+             /*case 'actualRadioMusic':
+             
+             break;*/
 	 	}
 	} else {
     	$generalController->displayHome();

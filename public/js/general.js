@@ -52,6 +52,11 @@ class General {
 			let version = Date.now();
 			let searchUrl = new URLSearchParams(document.location.search.substring(1));
 			let action = searchUrl.get("action");
+
+			$("body").append('<script src="./js/chatGesture.js?'+version+'"></script>'); //<script src="./js/radioMusicGesture.js?'+version+'"></script>
+        	let chat = new ChatGesture();
+        	//let radio = new RadioMusicGesture();
+        	
 			switch (action) {
 
 				case 'registration':
@@ -85,7 +90,12 @@ class General {
 					$("body").append('<script src="./js/reportGesture.js?'+version+'"></script>');
 					let reportGesture = new ReportGesture();
 				break;
-			}		
+
+				case "displayAccountGesture":
+					$("body").append('<script src="./js/displayAccountGesture.js?'+version+'"></script>');
+					let displayAccountGesture = new DisplayAccountGesture();
+				break;
+			}
 		});
 	}
 } 

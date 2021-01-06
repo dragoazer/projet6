@@ -51,6 +51,7 @@
         }
       }
     }
+    
     	public function setId($id)
   		{
     		if (is_int($id) OR is_string($id))

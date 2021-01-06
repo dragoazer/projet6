@@ -1,7 +1,7 @@
 <?php
 	namespace Projet6\Controller;
 
-	use Projet6\Entity\Chat;
+	use Projet6\Entity\Chatting;
 	use Projet6\Model\ChatModel;
 
 	/**
@@ -19,24 +19,18 @@
 
 		public function sendChatMessage () 
 		{
-			if (isset($_SESSION["connected"]) AND isset($_POST["inputMessage"])) {
+			if (isset($_SESSION["connected"]) AND isset($_POST["inputMessage"]) AND strlen($_POST["inputMessage"]) < 50 AND strlen($_POST["inputMessage"]) > 1 ) {
 				$data = [
 					"pseudo" => $_SESSION["connected"]["pseudo"],
 					"message" => $_POST["inputMessage"],
-					"time" => date('H:i'),
-					"date" => date('Y-m-d')
-
 				];
-				$chat = new Chat($data);
-				$chatModel = $this->chatModel->sendChatMessage($account);
+				$chat = new Chatting($data);
+				$chatModel = $this->chatModel->sendChatMessage($chat);
 			}
 		}
 
 		public function showChat ()
 		{
-			$data = [
-			];
-			$chat = new Chat($data);
-			$chatModel = $this->chatModel->showChat($account);	
+			$chatModel = $this->chatModel->showChat();	
 		}
 	}

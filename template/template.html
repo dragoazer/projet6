@@ -8,7 +8,7 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
             <meta name="viewport" content="initial-scale=1, width=device-width">
             <!-- CSS -->
-            <link href="/projet6/public/css/chatCss.css?1" rel="stylesheet"/>
+            <link href="/projet6/public/css/chatCss.css?3" rel="stylesheet"/>
             {% if css is defined %}
                 <link href="{{ css }}" rel="stylesheet"/>
             {% endif %}
@@ -19,7 +19,7 @@
 
             <!-- <script src="https://kit.fontawesome.com/aa2b6f73d5.js" crossorigin="anonymous"></script> -->
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
             <!-- Bootstrap core CSS -->
             <link href="/projet6/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -34,20 +34,28 @@
         {% endblock %} 
     </head>
     <body>
+        <!--<div id="radioMusic">
+            <p><button id="reduceRadio">-</button> Réduire<p>
+            <p>Radio</p>
+            <audio controls id="music">
+                <source src="./music/yuno-gasai-mirai-nikki-neotokio3.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>-->
+
         {% block content %}{% endblock %}
         {% block footer %}
 
             <footer>
                 <!-- CHAT -->
                 <div id="chat">
-                    <p id="chatGesture"><button id="reduce">-</button> Réduire</p>
-                    <div id="displayChat">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>            
+                    <p id="chatGesture"><button id="reduceChat">-</button> Réduire</p>
+                    <div id="displayChat">          
                     </div>
 
                     {% if session != "" %}
                         <form id="infoChat">
-                            <input id="inputMessage" placeholder="Entré un message" type="text" name="sendMessage">
+                            <input id="inputMessage" placeholder="Entré un message" type="text" name="inputMessage">
                             <button id="sendMessage">Envoyer</button>
                         </form>
                     {% elseif session != "" %}
@@ -79,9 +87,9 @@
             </footer>
         {% endblock %}
     </body>
-        <script src="/projet6/public/js/general.js?1.7"></script>
-        <script type="text/javascript">let general = new General;</script>
-        <script src="/projet6/public/js/chatGesture.js"></script>
-        <script type="text/javascript">let chat = new ChatGesture;</script>
+    <script src="/projet6/public/js/general.js?1.3.3"></script>
+    <script type="text/javascript">
+        let general = new General;
+    </script>      
 </html>
 

@@ -72,7 +72,7 @@
 
     	public function setEmail($email)
   		{
-    		if (is_string($email) AND filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+    		if (is_string($email) AND filter_var($email, FILTER_VALIDATE_EMAIL))
     		{
       			$this->email = $email;
     		}
